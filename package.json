@@ -10,6 +10,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@nextui-org/spinner": "^2.0.33",
+    "firebase": "^10.12.4",
+    "mongoose": "^8.5.1",
     "next": "14.2.5",
     "openai": "^4.53.2",
     "react": "^18",

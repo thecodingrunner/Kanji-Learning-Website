@@ -2,7 +2,7 @@ import React from 'react'
 
 const SidebarLeft = () => {
   return (
-    <div className='flex flex-col gap-2 w-[20vw] p-3 border m-2 border-black rounded-md'>
+    <div className='flex flex-col gap-2 w-[20vw] p-3 border m-2 border-blue-500 rounded-md'>
         <h3>Radicals</h3>
         <div>
             {}

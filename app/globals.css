@@ -11,5 +11,5 @@
 }
 
 .input {
-  @apply rounded-full border border-black px-3;
+  @apply rounded-full border px-3 border-blue-500;
 }

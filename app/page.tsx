@@ -5,7 +5,7 @@ import SidebarLeft from "@/components/SidebarLeft";
 export default function Home() {
   return (
     <main className="flex gap-4">
-        <SidebarLeft />
+        {/* <SidebarLeft /> */}
         <CardsDisplay />
     </main>
   );

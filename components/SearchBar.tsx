@@ -7,8 +7,8 @@ const SearchBar = () => {
     const [filter, setFilter] = useState('New');
   return (
     <div className='flex justify-between gap-3 m-4'>
-        <form className='input flex gap-2 items-center justify-center' onClick={() => {}} >
-            <input type='text' placeholder='Search for a kanji' value=''/>
+        <form className='input flex gap-2 items-center justify-center text-blue-500' onClick={() => {}} >
+            <input type='text' placeholder='Search for a kanji' className='focus:outline-blue-500'/>
             <button type='submit'><FaSearch /></button>
         </form>
         
