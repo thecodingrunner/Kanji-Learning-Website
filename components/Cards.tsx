@@ -70,7 +70,7 @@ const Cards = () => {
     },[])
 
   return (
-    <section className='grid grid-cols-5 m-4 gap-2'> 
+    <section className='grid grid-cols-6 m-4 gap-2'> 
         {cardsArray && cardsArray.map(({kanji, keyword, imageUrl}: cardsArrayInterface) => (
             <Link className='relative h-60 border-black rounded-md overflow-hidden' key={kanji} href={`/pages/${keyword}`}>
                 <img src={imageUrl} alt='' className='object-cover h-full object-center'/>

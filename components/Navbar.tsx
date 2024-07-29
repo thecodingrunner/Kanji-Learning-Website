@@ -4,7 +4,9 @@ import React from 'react'
 const Navbar = () => {
   return (
     <nav className='flex justify-between py-4 px-6 items-center'>
-      <Link href={'/'} className='text-2xl'>logo</Link>
+      <Link href={'/'} className='text-2xl'>
+        <img src='/logos/water logo 1.jpg' className='w-28 h-28 rounded-full' />
+      </Link>
       <div className='flex gap-5 justify-center items-center'>
         <Link href={'/pages/createCard'} className='btn-primary'>Create a new card</Link>
         <Link href={'/pages/revise'}>Revise</Link>
