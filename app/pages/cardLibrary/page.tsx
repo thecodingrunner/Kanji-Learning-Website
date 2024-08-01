@@ -26,10 +26,10 @@ const KanjiPage = () => {
         {getDisplayedKanji().map(({kanji, keyword}, index) => (
           <Link
             className={`${
-              displayed === "50" ? "h-28 w-28 text-6xl bg-gradient-to-b from-blue-500 to-blue-800" : "text-sm p-[2px] bg-blue-500"
+              displayed === "50" ? "h-40 w-40 text-6xl bg-gradient-to-b from-blue-500 to-blue-800" : "text-sm p-[2px] bg-blue-500"
             } text-white flex justify-center items-center drop-shadow-xl`}
             key={index}
-            href={`/pages/createCard/${index}`}
+            href={`/pages/createCard/${index + (50*(page - 1))}`}
           >
             {kanji}
           </Link>

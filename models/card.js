@@ -1,10 +1,14 @@
 import { Schema, model, models } from 'mongoose'
+import { type } from 'os'
 
 const CardSchema = new Schema({
-    // userId: {
-    //     type: Schema.Types.ObjectId,
-    //     ref: 'User',
-    // },
+    author: {
+        type: String,
+    },
+    userId: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+    },
     kanji: {
         type: String,
         required: [true, 'Kanji is required!'],

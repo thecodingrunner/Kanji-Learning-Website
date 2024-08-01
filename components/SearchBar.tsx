@@ -1,10 +1,17 @@
 "use client"
-import React, { useState } from 'react'
+
+import React, { Dispatch, SetStateAction, useState } from 'react'
 import { FaSearch } from "react-icons/fa";
 import { TiTick } from "react-icons/ti";
 
-const SearchBar = () => {
-    const [filter, setFilter] = useState('New');
+// Define the prop types
+interface SearchProps {
+  filter: string;
+  setFilter: Dispatch<SetStateAction<string>>;
+}
+
+const SearchBar: React.FC<SearchProps> = ({ filter, setFilter }) => {
+
   return (
     <div className='flex justify-between gap-3 m-4'>
         <form className='input flex gap-2 items-center justify-center text-blue-500' onClick={() => {}} >

@@ -37,6 +37,8 @@ export const POST = async (req) => {
   try {
     await connectToDB();
     const newCard = new Card({
+      author: card.author,
+      userId: card.userId,
       kanji: card.kanji,
       onyomi: card.onyomi,
       kunyomi: card.kunyomi,

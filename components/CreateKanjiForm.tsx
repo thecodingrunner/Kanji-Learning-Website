@@ -16,6 +16,7 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import { storage } from "../firebaseConfig";
+import { useSession } from "next-auth/react";
 
 interface kanjiObject {
   kanji?: string | undefined;
@@ -27,13 +28,15 @@ interface kanjiObject {
 const CreateKanjiForm = () => {
   const { index } = useParams();
 
+  const { data: session } = useSession();
+
   const router = useRouter();
 
   const [kanji, setKanji] = useState<kanjiObject>({
-    kanji: undefined,
-    onyomi: undefined,
-    kunyomi: undefined,
-    keyword: undefined,
+    kanji: '',
+    onyomi: '',
+    kunyomi: '',
+    keyword: '',
   });
   const [prompt, setPrompt] = useState<string>("");
   const [imageUrl, setImageUrl] = useState<string>("");
@@ -105,6 +108,8 @@ const CreateKanjiForm = () => {
     e.preventDefault();
 
     const cardToAdd = {
+      author: session?.user.name,
+      userId: session?.user.id,
       kanji: kanji.kanji,
       onyomi: kanji.onyomi,
       kunyomi: kanji.kunyomi,

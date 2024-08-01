@@ -1,7 +1,6 @@
 {
   "name": "kanji-app-practice",
   "version": "0.1.0",
-  "type": "module",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -11,9 +10,11 @@
   },
   "dependencies": {
     "@nextui-org/spinner": "^2.0.33",
+    "bcrypt": "^5.1.1",
     "firebase": "^10.12.4",
     "mongoose": "^8.5.1",
     "next": "14.2.5",
+    "next-auth": "^4.24.7",
     "openai": "^4.53.2",
     "react": "^18",
     "react-dom": "^18",
