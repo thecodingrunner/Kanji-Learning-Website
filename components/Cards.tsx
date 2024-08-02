@@ -11,7 +11,7 @@ interface SearchProps {
     setFilter: Dispatch<SetStateAction<string>>;
   }
 
-interface cardsArrayInterface {
+export interface cardsArrayInterface {
   author: string;
   userId: string;
   kanji: string;
