@@ -50,7 +50,7 @@ const SignUp = ({ setFormType }: any) => {
     });
 
     if (!result.ok) {
-      console.error('failed to register');
+      console.error("failed to register");
     } else {
       router.push("/");
     }
@@ -59,7 +59,7 @@ const SignUp = ({ setFormType }: any) => {
   }
 
   return (
-    <div className="shadow-xl py-6 px-10 bg-[#D9D9D9]">
+    <div className="shadow-2xl py-6 px-10 bg-blue-500 text-white">
       <h1 className="text-3xl font-semibold">Sign up</h1>
       <h3 className="pb-6">Get started scanning books</h3>
       <form onSubmit={(e) => register(e)} className="gap-4 flex flex-col">
@@ -86,7 +86,11 @@ const SignUp = ({ setFormType }: any) => {
       <p className="w-full text-center my-4">or</p>
       {session?.user ? (
         <div className="flex items-center gap-4">
-          <button type="button" className="w-full" onClick={() => signOut()}>
+          <button
+            type="button"
+            className="w-full text-black bg-white p-2 flex justify-center gap-1 rounded-lg"
+            onClick={() => signOut()}
+          >
             <img src={google.src} className="h-6 mr-2" alt="google icon" />
             Sign out with Google
           </button>
@@ -99,9 +103,12 @@ const SignUp = ({ setFormType }: any) => {
               .map((provider: any) => (
                 <button
                   type="button"
-                  className="w-full bg-white p-2 flex justify-center gap-1 rounded-lg"
+                  className="w-full text-black bg-white p-2 flex justify-center gap-1 rounded-lg"
                   key={provider.name}
-                  onClick={() => signIn(provider.id)}
+                  onClick={() => {
+                    signIn(provider.id);
+                    router.push("/");
+                  }}
                 >
                   <img
                     src={google.src}
