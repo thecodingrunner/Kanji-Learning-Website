@@ -1,19 +1,19 @@
-"use client"
+"use client";
 
+import Link from "next/link";
 import React, { useState } from "react";
 
 const page = () => {
-  const [revising, setRevising] = useState(false);
+
   return (
-    <>
-      {revising ? (
-        <></>
-      ) : (
-        <main className="flex items-center justify-center absolute top-1/2 w-full">
-          <button className="btn-secondary text-4xl" onClick={() => setRevising(true)}>Start Revision</button>
-        </main>
-      )}
-    </>
+    <main className="flex items-center justify-center absolute top-1/2 w-full h-screen">
+      <Link
+        className="btn-secondary-lg text-4xl"
+        href={'/pages/revise/revising'}
+      >
+        Start Revision
+      </Link>
+    </main>
   );
 };
 

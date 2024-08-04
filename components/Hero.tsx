@@ -9,10 +9,10 @@ const Hero = () => {
         <h1 className='text-2xl'>Kanjify</h1>
       </div> */}
       <h2 className="text-6xl font-bold">
-        Create AI generated Kanji Flashcards
+        Create AI Generated Kanji Flashcards
       </h2>
-      <div className="w-full flex gap-10 items-end justify-center mt-10">
-        <div className="h-60 w-60 rounded-t-md overflow-hidden shadow-xl">
+      <div className="w-full flex gap-0 md:gap-10 items-end justify-center mt-10">
+        <div className="h-60 w-60 hidden sm:flex rounded-t-md overflow-hidden shadow-xl md:flex-2">
           <Image
             src="/images/fire-card.jpg"
             alt=""
@@ -21,7 +21,7 @@ const Hero = () => {
             height={500}
           />
         </div>
-        <div className="h-80 w-80 rounded-md overflow-hidden shadow-2xl">
+        <div className="h-80 w-80 rounded-md overflow-hidden shadow-2xl md:flex-3">
           <Image
             src="/images/month-card.jpg"
             alt=""
@@ -30,7 +30,7 @@ const Hero = () => {
             height={500}
           />
         </div>
-        <div className="h-60 w-60 rounded-md overflow-hidden shadow-xl">
+        <div className="h-60 w-60 hidden sm:flex rounded-md overflow-hidden shadow-xl md:flex-2">
           <Image
             src="/images/generation-card.jpg"
             alt=""

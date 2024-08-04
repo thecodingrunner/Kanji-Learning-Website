@@ -67,16 +67,16 @@ const KanjiPage = () => {
           50
         </button>
       </div>
-      <article
-        className="gap-2 flex flex-wrap mx-auto px-10 pb-10"
-      >
+      <article className="gap-2 flex flex-wrap mx-auto px-10 pb-10">
         {getDisplayedKanji().map(({ kanji, keyword }, index) => (
           <>
             {cardsArray.some((el) => el.kanji === kanji) ? (
               <Link
                 className="h-40 w-40 text-6xl bg-gradient-to-b from-green-500 to-green-800 text-white flex justify-center items-center drop-shadow-xl"
                 key={index}
-                href={`/pages/${cardsArray.find((el) => el.kanji === kanji)?._id}`}
+                href={`/pages/${
+                  cardsArray.find((el) => el.kanji === kanji)?._id
+                }`}
               >
                 {kanji}
               </Link>
@@ -84,7 +84,11 @@ const KanjiPage = () => {
               <Link
                 className="h-40 w-40 text-6xl bg-gradient-to-b from-blue-500 to-blue-800 text-white flex justify-center items-center drop-shadow-xl"
                 key={index}
-                href={displayed === '50' ? `/pages/createCard/${index + 50 * (page - 1)}` : `/pages/createCard/${index + 25 * (page - 1)}`}
+                href={
+                  displayed === "50"
+                    ? `/pages/createCard/${index + 50 * (page - 1)}`
+                    : `/pages/createCard/${index + 25 * (page - 1)}`
+                }
               >
                 {kanji}
               </Link>
@@ -168,11 +172,101 @@ const KanjiPage = () => {
               </svg>
             </button>
             <button
-              onClick={() => setPage(Math.ceil(kanjiObjectArray.length / 50))}
+              onClick={() =>
+                setPage(Math.ceil(kanjiObjectArray.length / Number(displayed)))
+              }
               className="btn-secondary"
             >
               End
             </button>
+          </>
+        ) : page > Math.ceil(kanjiObjectArray.length / Number(displayed)) - 2 ? (
+          <>
+            <button onClick={() => setPage(1)} className="btn-secondary">
+              Start
+            </button>
+            <button
+              onClick={() => setPage((prev) => prev - 1)}
+              className="btn-secondary"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.8}
+                stroke="currentColor"
+                className="size-8"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15.75 19.5 8.25 12l7.5-7.5"
+                />
+              </svg>
+            </button>
+            <button
+              onClick={() => setPage(Math.ceil(kanjiObjectArray.length / Number(displayed)) - 4)}
+              className={`${page === Math.ceil(kanjiObjectArray.length / Number(displayed)) - 4 ? "font-bold" : ""} text-blue-500`}
+            >
+              {Math.ceil(kanjiObjectArray.length / Number(displayed)) - 4}
+            </button>
+            <button
+              onClick={() => setPage(Math.ceil(kanjiObjectArray.length / Number(displayed)) - 3)}
+              className={`${page === Math.ceil(kanjiObjectArray.length / Number(displayed)) - 3 ? "font-bold" : ""} text-blue-500`}
+            >
+              {Math.ceil(kanjiObjectArray.length / Number(displayed)) - 3}
+            </button>
+            <button
+              onClick={() => setPage(Math.ceil(kanjiObjectArray.length / Number(displayed)) - 2)}
+              className={`${page === Math.ceil(kanjiObjectArray.length / Number(displayed)) - 2 ? "font-bold" : ""} text-blue-500`}
+            >
+              {Math.ceil(kanjiObjectArray.length / Number(displayed)) - 2}
+            </button>
+            <button
+              onClick={() => setPage(Math.ceil(kanjiObjectArray.length / Number(displayed)) - 1)}
+              className={`${page === Math.ceil(kanjiObjectArray.length / Number(displayed)) - 1 ? "font-bold" : ""} text-blue-500`}
+            >
+              {Math.ceil(kanjiObjectArray.length / Number(displayed)) - 1}
+            </button>
+            <button
+              onClick={() => setPage(Math.ceil(kanjiObjectArray.length / Number(displayed)))}
+              className={`${page === Math.ceil(kanjiObjectArray.length / Number(displayed)) ? "font-bold" : ""} text-blue-500`}
+            >
+              {Math.ceil(kanjiObjectArray.length / Number(displayed))}
+            </button>
+            {page < Math.ceil(kanjiObjectArray.length / Number(displayed)) && (
+              <button
+                onClick={() => setPage((prev) => prev + 1)}
+                className="btn-secondary"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.8}
+                  stroke="currentColor"
+                  className="size-8"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                  />
+                </svg>
+              </button>
+            )}
+            {page < Math.ceil(kanjiObjectArray.length / Number(displayed)) && (
+              <button
+                onClick={() =>
+                  setPage(
+                    Math.ceil(kanjiObjectArray.length / Number(displayed))
+                  )
+                }
+                className="btn-secondary"
+              >
+                End
+              </button>
+            )}
           </>
         ) : (
           <>
@@ -235,7 +329,12 @@ const KanjiPage = () => {
                 />
               </svg>
             </button>
-            <button onClick={() => setPage(pages)} className="btn-secondary">
+            <button
+              onClick={() =>
+                setPage(Math.ceil(kanjiObjectArray.length / Number(displayed)))
+              }
+              className="btn-secondary"
+            >
               End
             </button>
           </>

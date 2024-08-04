@@ -28,6 +28,7 @@ const page = () => {
     prompt: "",
     keyword: "",
     rating: 0,
+    reviews: 0,
     updatedAt: "",
   });
 
@@ -206,6 +207,7 @@ const page = () => {
                   </svg>
                 </button>
               </div>
+              <p>({card.reviews})</p>
               <button className="btn-secondary" onClick={() => addRating()}>
               {submittedRating ? (<span className="flex justify-center items-center gap-2">Submitted <FaCheckCircle /></span>) : (<span className="flex justify-center items-center gap-2">Submit rating <IoIosAddCircle /></span>)}
               </button>

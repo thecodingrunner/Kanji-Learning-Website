@@ -18,6 +18,7 @@ import { storage } from "../firebaseConfig";
 import { useSession } from "next-auth/react";
 import ClipLoader from "react-spinners/ClipLoader";
 import Image from "next/image";
+import { PacmanLoader } from "react-spinners";
 
 interface kanjiObject {
   kanji?: string | undefined;
@@ -232,17 +233,23 @@ const CreateKanjiForm = () => {
 
         {generatingImage ? (
           <div className="mx-auto">
-            <ClipLoader
-              color={"blue"}
+            <PacmanLoader
+              color={"#3b82f6"}
               loading={generatingImage}
-              size={150}
+              size={80}
               aria-label="Loading Spinner"
               data-testid="loader"
             />
           </div>
         ) : imageUrl ? (
           <div className="flex items-center justify-center">
-            <Image src={imageUrl} alt="generated image" className="w-60 h-60" width={500} height={500} />
+            <Image
+              src={imageUrl}
+              alt="generated image"
+              className="w-60 h-60"
+              width={500}
+              height={500}
+            />
             <div>
               <button></button>
             </div>

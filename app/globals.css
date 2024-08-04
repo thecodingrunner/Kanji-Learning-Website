@@ -10,6 +10,11 @@
   @apply py-1 px-3 rounded-lg border bg-blue-500 text-white border-blue-500 w-auto bg-gradient-to-b from-blue-500 to-blue-700;
 }
 
+.btn-secondary-lg {
+  @apply py-3 px-6 font-bold rounded-lg border bg-blue-500 text-white border-blue-500 w-auto bg-gradient-to-b from-blue-500 to-blue-700 shadow-lg;
+}
+
+
 .btn-white {
   @apply py-1 px-3 rounded-lg border border-white w-auto text-white;
 }

@@ -9,5 +9,6 @@ export interface CardInterface {
     prompt: string,
     keyword: string,
     rating: number,
+    reviews: number,
     updatedAt: string,
 }
