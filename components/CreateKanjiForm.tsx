@@ -17,6 +17,7 @@ import {
 import { storage } from "../firebaseConfig";
 import { useSession } from "next-auth/react";
 import ClipLoader from "react-spinners/ClipLoader";
+import Image from "next/image";
 
 interface kanjiObject {
   kanji?: string | undefined;
@@ -141,16 +142,16 @@ const CreateKanjiForm = () => {
   return (
     <div className="flex gap-8 p-4">
       <form
-        className="flex flex-col gap-4 px-8 py-4 border border-blue-500 rounded-md flex-1 overflow-auto"
+        className="flex flex-col gap-4 px-8 py-4 border border-blue-500 rounded-md flex-1 overflow-auto bg-white shadow-lg"
         onSubmit={(e) => addCard(e)}
       >
-        <label>
+        <label className="label">
           Kanji
           <input
             type="text"
             placeholder={kanji?.kanji}
             value={kanji?.kanji}
-            className="ml-4 border"
+            className="card-input"
             onChange={(e) =>
               setKanji((prev) => {
                 return { ...prev, kanji: e.target.value };
@@ -159,13 +160,13 @@ const CreateKanjiForm = () => {
           />
         </label>
 
-        <label>
+        <label className="label">
           Keyword
           <input
             type="text"
             placeholder={kanji?.keyword}
             value={kanji?.keyword}
-            className="ml-4 border"
+            className="card-input"
             onChange={(e) =>
               setKanji((prev) => {
                 return { ...prev, keyword: e.target.value };
@@ -174,13 +175,13 @@ const CreateKanjiForm = () => {
           />
         </label>
 
-        <label>
+        <label className="label">
           Onyomi
           <input
             type="text"
             placeholder={kanji?.onyomi}
             value={kanji?.onyomi}
-            className="ml-4 border"
+            className="card-input"
             onChange={(e) =>
               setKanji((prev) => {
                 return { ...prev, onyomi: e.target.value };
@@ -189,13 +190,13 @@ const CreateKanjiForm = () => {
           />
         </label>
 
-        <label>
+        <label className="label">
           Kunyomi
           <input
             type="text"
             placeholder={kanji?.kunyomi}
             value={kanji?.kunyomi}
-            className="ml-4 border"
+            className="card-input"
             onChange={(e) =>
               setKanji((prev) => {
                 return { ...prev, kunyomi: e.target.value };
@@ -204,17 +205,8 @@ const CreateKanjiForm = () => {
           />
         </label>
 
-        <label className="flex">
+        <label className="label">
           Image prompt
-          <textarea
-            placeholder="write your image prompt here"
-            value={prompt}
-            className="ml-4 border w-full"
-            onChange={(e) => setPrompt(e.target.value)}
-          />
-        </label>
-
-        <div className="flex gap-4 items-center">
           <button
             type="button"
             onClick={() => generatePrompt()}
@@ -222,18 +214,24 @@ const CreateKanjiForm = () => {
           >
             Generate Prompt
           </button>
-          <button
-            type="button"
-            onClick={() => generateImage()}
-            className="btn-primary"
-          >
-            Generate Image
-          </button>
-        </div>
+          <textarea
+            placeholder="write your image prompt here"
+            value={prompt}
+            className="card-input"
+            onChange={(e) => setPrompt(e.target.value)}
+          />
+        </label>
 
+        <button
+          type="button"
+          onClick={() => generateImage()}
+          className="btn-primary text-lg"
+        >
+          Generate Image
+        </button>
 
         {generatingImage ? (
-          <div>
+          <div className="mx-auto">
             <ClipLoader
               color={"blue"}
               loading={generatingImage}
@@ -244,7 +242,7 @@ const CreateKanjiForm = () => {
           </div>
         ) : imageUrl ? (
           <div className="flex items-center justify-center">
-            <img src={imageUrl} alt="generated image" className="w-60 h-60" />
+            <Image src={imageUrl} alt="generated image" className="w-60 h-60" width={500} height={500} />
             <div>
               <button></button>
             </div>
@@ -258,11 +256,11 @@ const CreateKanjiForm = () => {
 
       <div className="flex-1 p-4 flex flex-col gap-4">
         <h2 className="text-3xl text-center">Front</h2>
-        <div className="w-full flex flex-col gap-4 items-center justify-center border border-blue-500 p-4">
+        <div className="w-full flex flex-col gap-4 items-center rounded-md justify-center border border-blue-500 p-4 bg-white shadow-lg">
           <h1 className="text-9xl">{kanji?.kanji}</h1>
         </div>
         <h2 className="text-3xl text-center">Back</h2>
-        <div className="w-full flex flex-col gap-4 items-center justify-center border border-blue-500 p-4">
+        <div className="w-full flex flex-col gap-4 items-center rounded-md justify-center border border-blue-500 p-4 bg-white shadow-lg">
           <h1 className="text-4xl">{kanji?.keyword}</h1>
           <h1 className="text-2xl">{kanji?.onyomi}</h1>
           <h1 className="text-2xl">{kanji?.kunyomi}</h1>

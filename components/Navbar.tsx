@@ -11,7 +11,7 @@ const Navbar = () => {
   const router = useRouter();
 
   return (
-    <nav className="flex justify-between py-4 px-6 items-center bg-blue-500 m-2 rounded-3xl shadow-xl">
+    <nav className="flex justify-between py-4 px-12 items-center hero-gradient m-2 rounded-3xl shadow-xl">
       <Link href={"/"} className="text-2xl bg-white rounded-full p-2 shadow-xl">
         <img src="/logos/water logo 1.jpg" className="w-28 h-28 rounded-full" />
       </Link>

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { cardsArrayInterface } from "@/components/Cards";
 
 const KanjiPage = () => {
-  const [displayed, setDisplayed] = useState("50");
+  const [displayed, setDisplayed] = useState("25");
   const [page, setPage] = useState(1);
 
   const [cardsArray, setCardsArray] = useState<[cardsArrayInterface]>([
@@ -18,6 +18,8 @@ const KanjiPage = () => {
       kunyomi: "",
       keyword: "",
       imageUrl: "",
+      rating: 0,
+      reviews: 0,
       updatedAt: "",
     },
   ]);
@@ -42,8 +44,9 @@ const KanjiPage = () => {
   const getDisplayedKanji = () => {
     if (displayed === "50") {
       return kanjiObjectArray.slice(page * 50 - 50, page * 50);
+    } else {
+      return kanjiObjectArray.slice(page * 25 - 25, page * 25);
     }
-    return kanjiObjectArray;
   };
 
   const pages = Math.ceil(kanjiObjectArray.length / 50);
@@ -52,32 +55,26 @@ const KanjiPage = () => {
     <div className="flex flex-col gap-2 justify-center items-center">
       <div className="my-6 flex justify-center items-center gap-6 text-xl">
         <button
+          onClick={() => setDisplayed("25")}
+          className={`${displayed === "25" ? "btn-secondary" : "btn-primary"}`}
+        >
+          25
+        </button>
+        <button
           onClick={() => setDisplayed("50")}
           className={`${displayed === "50" ? "btn-secondary" : "btn-primary"}`}
         >
           50
         </button>
-        <button
-          onClick={() => setDisplayed("All")}
-          className={`${displayed === "All" ? "btn-secondary" : "btn-primary"}`}
-        >
-          All
-        </button>
       </div>
       <article
-        className={`${
-          displayed === "50" ? "gap-2" : ""
-        } flex flex-wrap mx-auto px-10 pb-10`}
+        className="gap-2 flex flex-wrap mx-auto px-10 pb-10"
       >
         {getDisplayedKanji().map(({ kanji, keyword }, index) => (
           <>
             {cardsArray.some((el) => el.kanji === kanji) ? (
               <Link
-                className={`${
-                  displayed === "50"
-                    ? "h-40 w-40 text-6xl bg-gradient-to-b from-green-500 to-green-800"
-                    : "text-sm p-[2px] bg-green-500"
-                } text-white flex justify-center items-center drop-shadow-xl`}
+                className="h-40 w-40 text-6xl bg-gradient-to-b from-green-500 to-green-800 text-white flex justify-center items-center drop-shadow-xl"
                 key={index}
                 href={`/pages/${cardsArray.find((el) => el.kanji === kanji)?._id}`}
               >
@@ -85,13 +82,9 @@ const KanjiPage = () => {
               </Link>
             ) : (
               <Link
-                className={`${
-                  displayed === "50"
-                    ? "h-40 w-40 text-6xl bg-gradient-to-b from-blue-500 to-blue-800"
-                    : "text-sm p-[2px] bg-blue-500"
-                } text-white flex justify-center items-center drop-shadow-xl`}
+                className="h-40 w-40 text-6xl bg-gradient-to-b from-blue-500 to-blue-800 text-white flex justify-center items-center drop-shadow-xl"
                 key={index}
-                href={`/pages/createCard/${index + 50 * (page - 1)}`}
+                href={displayed === '50' ? `/pages/createCard/${index + 50 * (page - 1)}` : `/pages/createCard/${index + 25 * (page - 1)}`}
               >
                 {kanji}
               </Link>

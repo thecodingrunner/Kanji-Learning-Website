@@ -10,7 +10,8 @@ const page = () => {
   const params = useParams();
   console.log(params);
 
-  const [submitted, setSubmitted] = useState(false);
+  const [submittedRating, setSubmittedRating] = useState(false);
+  const [submittedCard, setSubmittedCard] = useState(false);
   const [rating, setRating] = useState(0);
 
   const router = useRouter();
@@ -54,14 +55,10 @@ const page = () => {
         body: JSON.stringify({ rating }),
       });
 
-      if (response.ok) {
-        router.push("/");
-        console.log("rating added");
-      }
     } catch (error) {
       console.log(error);
     } finally {
-      setSubmitted(true);
+      setSubmittedRating(true);
     }
   };
 
@@ -80,7 +77,7 @@ const page = () => {
     } catch (error) {
       console.log(error);
     } finally {
-      setSubmitted(true);
+      setSubmittedCard(true);
     }
   };
 
@@ -96,10 +93,10 @@ const page = () => {
             )}
             {!card.userIds.includes(session?.user.id) && (
               <button className="btn-secondary" onClick={(e) => addCard(e)}>
-                {submitted ? (<span className="flex justify-center items-center gap-2">Added to collection <FaCheckCircle /></span>) : (<span className="flex justify-center items-center gap-2">Add to collection <IoIosAddCircle /></span>)}
+                {submittedCard ? (<span className="flex justify-center items-center gap-2">Added to collection <FaCheckCircle /></span>) : (<span className="flex justify-center items-center gap-2">Add to collection <IoIosAddCircle /></span>)}
               </button>
             )}
-            <div className="flex gap-4 justify-center items-center p-4 border border-blue-500 rounded-lg">
+            <div className="flex gap-4 justify-center items-center p-4 border border-blue-500 rounded-lg bg-white">
               <div className="flex justify-center items-center">
                 <button onClick={() => setRating(1)}>
                   <svg
@@ -210,16 +207,16 @@ const page = () => {
                 </button>
               </div>
               <button className="btn-secondary" onClick={() => addRating()}>
-                Submit rating
+              {submittedRating ? (<span className="flex justify-center items-center gap-2">Submitted <FaCheckCircle /></span>) : (<span className="flex justify-center items-center gap-2">Submit rating <IoIosAddCircle /></span>)}
               </button>
             </div>
           </div>
           <article className="flex w-screen">
-            <div className="grid grid-cols-2 gap-10 p-4 w-full">
-              <div className="flex items-center justify-center border border-blue-500 rounded-md p-4">
+            <div className="grid grid-cols-2 gap-10 px-10 py-6 w-full">
+              <div className="flex items-center justify-center border border-blue-500 rounded-md p-4 bg-white">
                 <h1 className="text-[16rem]">{card.kanji}</h1>
               </div>
-              <div className="flex flex-col items-center justify-center gap-2 border border-blue-500 rounded-md p-4">
+              <div className="flex flex-col items-center justify-center gap-2 border border-blue-500 rounded-md p-4 bg-white">
                 <h2 className="text-2xl">{card.keyword}</h2>
                 <h3 className="text-2xl">{card.onyomi}</h3>
                 <h3 className="text-2xl">{card.kunyomi}</h3>
