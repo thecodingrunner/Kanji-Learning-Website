@@ -5,9 +5,10 @@ const CardSchema = new Schema({
     author: {
         type: String,
     },
-    userId: {
-        type: Schema.Types.ObjectId,
+    userIds: {
+        type: [Schema.Types.ObjectId],
         ref: 'User',
+        default: [],
     },
     kanji: {
         type: String,
@@ -29,6 +30,17 @@ const CardSchema = new Schema({
     imageUrl: {
         type: String,
     },
+    users: {
+        type: Number,
+        default: 0,
+    },
+    rating: {
+        type: Number,
+    },
+    reviews: {
+        type: Number,
+        default: 0,
+    }
 }, {timestamps: true})
 
 const Card = models?.Card || model("Card", CardSchema)

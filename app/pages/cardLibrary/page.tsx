@@ -10,6 +10,7 @@ const KanjiPage = () => {
 
   const [cardsArray, setCardsArray] = useState<[cardsArrayInterface]>([
     {
+      _id: "",
       author: "",
       userId: "",
       kanji: "",
@@ -78,7 +79,7 @@ const KanjiPage = () => {
                     : "text-sm p-[2px] bg-green-500"
                 } text-white flex justify-center items-center drop-shadow-xl`}
                 key={index}
-                href={`/pages/${keyword}`}
+                href={`/pages/${cardsArray.find((el) => el.kanji === kanji)?._id}`}
               >
                 {kanji}
               </Link>

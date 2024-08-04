@@ -11,22 +11,22 @@ const Navbar = () => {
   const router = useRouter();
 
   return (
-    <nav className="flex justify-between py-4 px-6 items-center">
-      <Link href={"/"} className="text-2xl">
+    <nav className="flex justify-between py-4 px-6 items-center bg-blue-500 m-2 rounded-3xl shadow-xl">
+      <Link href={"/"} className="text-2xl bg-white rounded-full p-2 shadow-xl">
         <img src="/logos/water logo 1.jpg" className="w-28 h-28 rounded-full" />
       </Link>
       {session?.user ? (
         <div className="flex gap-5 justify-center items-center">
-          <Link href={"/pages/createCard"} className="btn-primary">
+          <Link href={"/pages/createCard"} className="btn-white">
             Create a new card
           </Link>
-          <Link href={"/pages/revise"}>Revise</Link>
-          <Link href={"/pages/cardLibrary"}>Your collection</Link>
-          <button className="btn-primary" onClick={() => signOut()}>Sign out</button>
+          <Link href={"/pages/revise"} className="text-white">Revise</Link>
+          <Link href={"/pages/cardLibrary"} className="text-white">Your collection</Link>
+          <button className="btn-white" onClick={() => signOut()}>Sign out</button>
         </div>
       ) : (
         <div className="flex gap-5 justify-center items-center">
-          <a className="btn-primary" href={"/pages/authPage"}>Sign in</a>
+          <a className="btn-white" href={"/pages/authPage"}>Sign in</a>
         </div>
       )}
     </nav>

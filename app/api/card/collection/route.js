@@ -27,14 +27,16 @@ export const GET = async (req, res) => {
             if (!user) {
                 return new Response("User not found", { status: 404 });
             }
-            userId = user._id.toString();
+            userId = user.id.toString();
         } else {
             return new Response("Invalid session data", { status: 400 });
         }
 
         console.log("User ID:", userId);
 
-        const cards = await Card.find({ userId }).populate('userId');
+        const cards = await Card.find({ userIds: userId }).populate('userIds');
+
+        console.log(cards)
 
         // console.log("Books:", JSON.stringify(books));
 

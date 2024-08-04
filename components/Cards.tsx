@@ -7,11 +7,12 @@ import Link from "next/link";
 
 // Define the prop types
 interface SearchProps {
-    filter: string;
-    setFilter: Dispatch<SetStateAction<string>>;
-  }
+  filter: string;
+  setFilter: Dispatch<SetStateAction<string>>;
+}
 
 export interface cardsArrayInterface {
+  _id: string;
   author: string;
   userId: string;
   kanji: string;
@@ -19,13 +20,15 @@ export interface cardsArrayInterface {
   kunyomi: string;
   keyword: string;
   imageUrl: string;
+  rating: number;
+  reviews: number;
   updatedAt: string;
 }
 
 const Cards: React.FC<SearchProps> = ({ filter, setFilter }) => {
-
   const [cardsArray, setCardsArray] = useState<[cardsArrayInterface]>([
     {
+      _id: "",
       author: "",
       userId: "",
       kanji: "",
@@ -33,18 +36,42 @@ const Cards: React.FC<SearchProps> = ({ filter, setFilter }) => {
       kunyomi: "",
       keyword: "",
       imageUrl: "",
+      rating: 0,
+      reviews: 0,
       updatedAt: "",
     },
   ]);
 
   useEffect(() => {
-    console.log(cardsArray[0].updatedAt);
+    console.log(cardsArray)
+  }, [cardsArray])
+
+  useEffect(() => {
     switch (filter) {
       case "New":
-        cardsArray.sort(
+        setCardsArray(prev => prev.sort(
           (a, b) =>
-            new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime()
-        );
+            new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+        ));
+        break;
+      case "Popular ascending":
+        setCardsArray(prev => prev.sort(
+          (a, b) =>
+            new Date(b.reviews).getTime() - new Date(a.reviews).getTime()
+        ));
+        break;
+      case "Popular descending":
+        setCardsArray(prev => prev.sort(
+          (a, b) =>
+            new Date(a.reviews).getTime() - new Date(b.reviews).getTime()
+        ));
+        break;
+      case "Rating":
+        setCardsArray(prev => prev.sort(
+          (a, b) =>
+            new Date(a.rating).getTime() - new Date(b.rating).getTime()
+        ));
+        break;
     }
   }, [filter]);
 
@@ -68,11 +95,11 @@ const Cards: React.FC<SearchProps> = ({ filter, setFilter }) => {
   return (
     <section className="grid grid-cols-6 m-4 gap-2">
       {cardsArray &&
-        cardsArray.map(({ kanji, keyword, imageUrl }: cardsArrayInterface) => (
+        cardsArray.map(({ kanji, keyword, imageUrl, _id }: cardsArrayInterface) => (
           <Link
             className="relative h-60 border-black rounded-md overflow-hidden"
-            key={kanji}
-            href={`/pages/${keyword}`}
+            key={_id}
+            href={`/pages/${_id}`}
           >
             <img
               src={imageUrl}

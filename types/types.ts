@@ -1,11 +1,13 @@
 export interface CardInterface {
+    _id: string,
     author: string,
-    userId: string,
+    userIds: [string | undefined],
     kanji: string,
     onyomi: string,
     kunyomi: string,
     imageUrl: string,
     prompt: string,
     keyword: string,
+    rating: number,
     updatedAt: string,
 }

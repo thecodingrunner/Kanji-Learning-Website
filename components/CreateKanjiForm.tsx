@@ -4,7 +4,6 @@ import { kanjiObjectArray } from "@/public/data";
 import { useParams, useSearchParams } from "next/navigation";
 import { SyntheticEvent, useEffect, useState } from "react";
 
-import { Spinner } from "@nextui-org/spinner";
 import { useRouter } from "next/navigation";
 import Card from "@/models/card";
 
@@ -17,6 +16,7 @@ import {
 } from "firebase/storage";
 import { storage } from "../firebaseConfig";
 import { useSession } from "next-auth/react";
+import ClipLoader from "react-spinners/ClipLoader";
 
 interface kanjiObject {
   kanji?: string | undefined;
@@ -33,10 +33,10 @@ const CreateKanjiForm = () => {
   const router = useRouter();
 
   const [kanji, setKanji] = useState<kanjiObject>({
-    kanji: '',
-    onyomi: '',
-    kunyomi: '',
-    keyword: '',
+    kanji: "",
+    onyomi: "",
+    kunyomi: "",
+    keyword: "",
   });
   const [prompt, setPrompt] = useState<string>("");
   const [imageUrl, setImageUrl] = useState<string>("");
@@ -109,13 +109,16 @@ const CreateKanjiForm = () => {
 
     const cardToAdd = {
       author: session?.user.name,
-      userId: session?.user.id,
+      userIds: [session?.user.id],
       kanji: kanji.kanji,
       onyomi: kanji.onyomi,
       kunyomi: kanji.kunyomi,
       keyword: kanji.keyword,
       prompt: prompt,
       imageUrl: imageUrl,
+      users: 1,
+      reviews: 0,
+      rating: 0,
     };
 
     try {
@@ -228,9 +231,16 @@ const CreateKanjiForm = () => {
           </button>
         </div>
 
+
         {generatingImage ? (
           <div>
-            <Spinner />
+            <ClipLoader
+              color={"blue"}
+              loading={generatingImage}
+              size={150}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />
           </div>
         ) : imageUrl ? (
           <div className="flex items-center justify-center">

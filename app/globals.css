@@ -10,6 +10,10 @@
   @apply py-1 px-3 rounded-lg border bg-blue-500 text-white border-blue-500 w-auto bg-gradient-to-b from-blue-500 to-blue-700;
 }
 
+.btn-white {
+  @apply py-1 px-3 rounded-lg border border-white w-auto text-white;
+}
+
 .input {
   @apply rounded-full border px-3 border-blue-500;
 }

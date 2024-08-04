@@ -9,7 +9,7 @@ export const GET = async (req, res) => {
         const cards = await Card.aggregate([
             // Group by the field you want to check for uniqueness
             { $group: {
-              _id: "$kanji",
+              _id: "$prompt",
               count: { $sum: 1 },
               doc: { $first: "$$ROOT" }
             }},
