@@ -37,8 +37,11 @@ export const GET = async (req, res) => {
     const cards = await Card.find({
       userIds: userId,
       $expr: {
-        $gt: [{ $subtract: [new Date(), "$lastStudied"] }, "$interval"*1000],
-      },
+        $gt: [
+          { $subtract: [{ $toDate: new Date().toISOString() }, "$lastStudied"] },
+          { $multiply: ["$interval", 1000] }
+        ]
+      }
     }).populate("userIds");
 
     console.log(cards);
