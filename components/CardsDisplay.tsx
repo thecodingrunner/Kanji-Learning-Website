@@ -1,18 +1,19 @@
-"use client"
+"use client";
 
-import React, { useState } from 'react'
-import SearchBar from './SearchBar'
-import Cards from './Cards'
+import React, { useEffect, useRef, useState } from "react";
+import SearchBar from "./SearchBar";
+import Cards from "./Cards";
 
 const CardsDisplay = () => {
-  const [filter, setFilter] = useState('New');
 
   return (
-    <section className='w-[80vw] my-10 p-2 mx-auto border-2 border-blue-500 rounded-lg'>
-        <SearchBar filter={filter} setFilter={setFilter} />
-        <Cards filter={filter} setFilter={setFilter} />
+    <section
+      className="w-[80vw] my-10 p-2 mx-auto border-2 border-blue-500 rounded-lg"
+    >
+      <SearchBar />
+      <Cards />
     </section>
-  )
-}
+  );
+};
 
-export default CardsDisplay
+export default CardsDisplay;

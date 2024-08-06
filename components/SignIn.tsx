@@ -59,7 +59,7 @@ const SignIn = ({ setFormType }: any) => {
           type="text"
           name="username"
           placeholder="Username"
-          className="px-2 py-1"
+          className="px-2 py-1 text-black"
           onChange={(e) => setUsername(e.target.value)}
           value={username}
         />
@@ -67,7 +67,7 @@ const SignIn = ({ setFormType }: any) => {
           type="password"
           name="password"
           placeholder="Password"
-          className="px-2 py-1"
+          className="px-2 py-1 text-black"
           onChange={(e) => setPassword(e.target.value)}
           value={password}
         />

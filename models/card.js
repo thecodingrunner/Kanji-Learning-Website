@@ -30,6 +30,15 @@ const CardSchema = new Schema({
     imageUrl: {
         type: String,
     },
+    audioUrl: {
+        type: String,
+    },
+    interval: {
+        type: Number,
+    },
+    lastStudied: {
+        type: Date,
+    },
     users: {
         type: Number,
         default: 0,

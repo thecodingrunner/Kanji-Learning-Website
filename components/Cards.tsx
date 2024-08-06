@@ -10,47 +10,58 @@ import React, {
 import flame from "../public/flame.jpg";
 import Image from "next/image";
 import Link from "next/link";
-
-// Define the prop types
-interface SearchProps {
-  filter: string;
-  setFilter: Dispatch<SetStateAction<string>>;
-}
+import { useSearchParams } from "next/navigation";
 
 export interface cardsArrayInterface {
   _id: string;
   author: string;
-  userId: string;
+  userIds: [string];
   kanji: string;
   onyomi: string;
   kunyomi: string;
   keyword: string;
   imageUrl: string;
+  audioUrl: string;
+  prompt: string;
+  interval: number;
+  lastStudied: Date;
   rating: number;
   reviews: number;
   updatedAt: string;
 }
 
-const Cards: React.FC<SearchProps> = ({ filter, setFilter }) => {
+const Cards = () => {
+
+  const searchParams = useSearchParams(); 
+  const search = searchParams.get('search');
+
   const [cardsArray, setCardsArray] = useState<[cardsArrayInterface]>([
     {
       _id: "",
       author: "",
-      userId: "",
+      userIds: [""],
       kanji: "",
       onyomi: "",
       kunyomi: "",
       keyword: "",
       imageUrl: "",
+      audioUrl: "",
+      prompt: "",
+      interval: 600,
+      lastStudied: new Date(),
       rating: 0,
       reviews: 0,
       updatedAt: "",
     },
   ]);
 
+  useEffect(() => {
+    console.log(search)
+  }, [search])
+
   const sortedCardsArray = useMemo(() => {
     return [...cardsArray].sort((a, b) => {
-      switch (filter) {
+      switch (search) {
         case "New":
           return (
             new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
@@ -65,7 +76,7 @@ const Cards: React.FC<SearchProps> = ({ filter, setFilter }) => {
           return 0;
       }
     });
-  }, [cardsArray, filter]);
+  }, [cardsArray, searchParams]);
 
   useEffect(() => {
     const fetchPosts = async () => {

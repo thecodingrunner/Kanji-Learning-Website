@@ -25,6 +25,9 @@ const page = () => {
     onyomi: "",
     kunyomi: "",
     imageUrl: "",
+    audioUrl: "",
+    interval: 600,
+    lastStudied: new Date(),
     prompt: "",
     keyword: "",
     rating: 0,
@@ -55,7 +58,6 @@ const page = () => {
         method: "PATCH",
         body: JSON.stringify({ rating }),
       });
-
     } catch (error) {
       console.log(error);
     } finally {
@@ -94,7 +96,15 @@ const page = () => {
             )}
             {!card.userIds.includes(session?.user.id) && (
               <button className="btn-secondary" onClick={(e) => addCard(e)}>
-                {submittedCard ? (<span className="flex justify-center items-center gap-2">Added to collection <FaCheckCircle /></span>) : (<span className="flex justify-center items-center gap-2">Add to collection <IoIosAddCircle /></span>)}
+                {submittedCard ? (
+                  <span className="flex justify-center items-center gap-2">
+                    Added to collection <FaCheckCircle />
+                  </span>
+                ) : (
+                  <span className="flex justify-center items-center gap-2">
+                    Add to collection <IoIosAddCircle />
+                  </span>
+                )}
               </button>
             )}
             <div className="flex gap-4 justify-center items-center p-4 border border-blue-500 rounded-lg bg-white">
@@ -209,7 +219,15 @@ const page = () => {
               </div>
               <p>({card.reviews})</p>
               <button className="btn-secondary" onClick={() => addRating()}>
-              {submittedRating ? (<span className="flex justify-center items-center gap-2">Submitted <FaCheckCircle /></span>) : (<span className="flex justify-center items-center gap-2">Submit rating <IoIosAddCircle /></span>)}
+                {submittedRating ? (
+                  <span className="flex justify-center items-center gap-2">
+                    Submitted <FaCheckCircle />
+                  </span>
+                ) : (
+                  <span className="flex justify-center items-center gap-2">
+                    Submit rating <IoIosAddCircle />
+                  </span>
+                )}
               </button>
             </div>
           </div>
@@ -222,6 +240,11 @@ const page = () => {
                 <h2 className="text-2xl">{card.keyword}</h2>
                 <h3 className="text-2xl">{card.onyomi}</h3>
                 <h3 className="text-2xl">{card.kunyomi}</h3>
+                {card.audioUrl && (
+                  <audio controls className="">
+                    <source src={card.audioUrl} type="audio/mp3" />
+                  </audio>
+                )}
                 <img src={card.imageUrl} className="w-72 h-72" />
                 <p className="text-xl">{card.prompt}</p>
               </div>

@@ -49,11 +49,13 @@ const SignUp = ({ setFormType }: any) => {
       body: JSON.stringify(user),
     });
 
-    if (!result.ok) {
-      console.error("failed to register");
-    } else {
-      router.push("/");
-    }
+    console.log(result)
+
+    // if (!result.ok) {
+    //   console.error("failed to register");
+    // } else {
+    //   router.push("/");
+    // }
 
     setFormType("signin");
   }
@@ -67,7 +69,7 @@ const SignUp = ({ setFormType }: any) => {
           type="text"
           name="username"
           placeholder="Username"
-          className="px-2 py-1"
+          className="px-2 py-1 text-black"
           onChange={(e) => setUsername(e.target.value)}
           value={username}
         />
@@ -75,7 +77,7 @@ const SignUp = ({ setFormType }: any) => {
           type="password"
           name="password"
           placeholder="Password"
-          className="px-2 py-1"
+          className="px-2 py-1 text-black"
           onChange={(e) => setPassword(e.target.value)}
           value={password}
         />

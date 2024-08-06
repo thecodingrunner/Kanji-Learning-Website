@@ -6,7 +6,7 @@ import React, { useState } from "react";
 const page = () => {
 
   return (
-    <main className="flex items-center justify-center absolute top-1/2 w-full h-screen">
+    <main className="flex items-center justify-center w-full h-[60vh]">
       <Link
         className="btn-secondary-lg text-4xl"
         href={'/pages/revise/revising'}
