@@ -1,75 +1,98 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import { kanjiObjectArray } from "../../../public/data";
 import Link from "next/link";
 import { cardsArrayInterface } from "@/components/Cards";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const KanjiPage = () => {
-  const [displayed, setDisplayed] = useState("25");
+  const [displayed, setDisplayed] = useState(25);
   const [page, setPage] = useState(1);
 
-  const [cardsArray, setCardsArray] = useState<[cardsArrayInterface]>([
+  const router = useRouter();
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    if (!session?.user.id) {
+      router.push('/')
+    }
+  }, [])
+
+  const [cardsArray, setCardsArray] = useState<cardsArrayInterface[]>([
     {
       _id: "",
       author: "",
-      userId: "",
+      userIds: [""],
       kanji: "",
       onyomi: "",
       kunyomi: "",
-      keyword: "",
       imageUrl: "",
+      audioUrl: "",
+      interval: 600,
+      lastStudied: new Date(),
+      prompt: "",
+      keyword: "",
       rating: 0,
       reviews: 0,
       updatedAt: "",
     },
   ]);
 
+  // Fetch cards on page load
   useEffect(() => {
-    const fetchPosts = async () => {
-      const response = await fetch("/api/card/collection", {});
-      const data = await response.json();
-      console.log(data);
+    try {
+      const fetchCards = async () => {
+        const response = await fetch("/api/card/collection", {});
+        const data = await response.json();
 
-      // data.sort(
-      //   (a: any, b: any) =>
-      //     new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-      // );
+        setCardsArray(data);
+      };
 
-      setCardsArray(data);
-    };
+      console.log("Successfully fetched cards");
 
-    fetchPosts();
+      fetchCards();
+    } catch (error) {
+      console.log("Failed to fetch cards", error);
+    }
   }, []);
 
+  // Slice correct number of kanji to display based on the displayed state
   const getDisplayedKanji = () => {
-    if (displayed === "50") {
-      return kanjiObjectArray.slice(page * 50 - 50, page * 50);
-    } else {
-      return kanjiObjectArray.slice(page * 25 - 25, page * 25);
-    }
+    return kanjiObjectArray.slice(
+      page * displayed - displayed,
+      page * displayed
+    );
   };
 
-  const pages = Math.ceil(kanjiObjectArray.length / 50);
+  const pages = Math.ceil(kanjiObjectArray.length / displayed);
 
   return (
     <div className="flex flex-col gap-2 justify-center items-center">
+
+      {/* Buttons for selecting the number of kanji to be displayed per page */}
       <div className="my-6 flex justify-center items-center gap-6 text-xl">
         <button
-          onClick={() => setDisplayed("25")}
-          className={`${displayed === "25" ? "btn-secondary" : "btn-primary"}`}
+          onClick={() => setDisplayed(25)}
+          className={`${displayed === 25 ? "btn-secondary" : "btn-primary"}`}
         >
           25
         </button>
         <button
-          onClick={() => setDisplayed("50")}
-          className={`${displayed === "50" ? "btn-secondary" : "btn-primary"}`}
+          onClick={() => setDisplayed(50)}
+          className={`${displayed === 50 ? "btn-secondary" : "btn-primary"}`}
         >
           50
         </button>
       </div>
+
+      {/* Map through and display all the kanji from the kanji array. */}
       <article className="gap-2 flex flex-wrap mx-auto px-10 pb-10">
         {getDisplayedKanji().map(({ kanji, keyword }, index) => (
           <>
+          {/* If there is a card in the users collection of the same kanji, display this kanji with a green background to show that it has been added. */}
+          {/* The link will also be to the page for viewing the currently existing card, rather than the page for creating a new card. */}
             {cardsArray.some((el) => el.kanji === kanji) ? (
               <Link
                 className="h-40 w-40 text-6xl bg-gradient-to-b from-green-500 to-green-800 text-white flex justify-center items-center drop-shadow-xl"
@@ -84,11 +107,7 @@ const KanjiPage = () => {
               <Link
                 className="h-40 w-40 text-6xl bg-gradient-to-b from-blue-500 to-blue-800 text-white flex justify-center items-center drop-shadow-xl"
                 key={index}
-                href={
-                  displayed === "50"
-                    ? `/pages/createCard/${index + 50 * (page - 1)}`
-                    : `/pages/createCard/${index + 25 * (page - 1)}`
-                }
+                href={`/pages/createCard/${index + displayed * (page - 1)}`}
               >
                 {kanji}
               </Link>
@@ -97,7 +116,9 @@ const KanjiPage = () => {
         ))}
       </article>
 
+{/* Pagination component */}
       <div className="w-full flex justify-center items-center text-2xl gap-3 my-8">
+        {/* If the current page is less than 3, the highlighting style will be different. */}
         {page < 3 ? (
           <>
             <button onClick={() => setPage(1)} className="btn-secondary">
@@ -173,14 +194,16 @@ const KanjiPage = () => {
             </button>
             <button
               onClick={() =>
-                setPage(Math.ceil(kanjiObjectArray.length / Number(displayed)))
+                setPage(Math.ceil(kanjiObjectArray.length / displayed))
               }
               className="btn-secondary"
             >
               End
             </button>
           </>
-        ) : page > Math.ceil(kanjiObjectArray.length / Number(displayed)) - 2 ? (
+          // If the page is greater than two before the last, this highlighting will be displayed differently
+        ) : page >
+          Math.ceil(kanjiObjectArray.length / displayed) - 2 ? (
           <>
             <button onClick={() => setPage(1)} className="btn-secondary">
               Start
@@ -205,36 +228,78 @@ const KanjiPage = () => {
               </svg>
             </button>
             <button
-              onClick={() => setPage(Math.ceil(kanjiObjectArray.length / Number(displayed)) - 4)}
-              className={`${page === Math.ceil(kanjiObjectArray.length / Number(displayed)) - 4 ? "font-bold" : ""} text-blue-500`}
+              onClick={() =>
+                setPage(
+                  Math.ceil(kanjiObjectArray.length / displayed) - 4
+                )
+              }
+              className={`${
+                page ===
+                Math.ceil(kanjiObjectArray.length / displayed) - 4
+                  ? "font-bold"
+                  : ""
+              } text-blue-500`}
             >
-              {Math.ceil(kanjiObjectArray.length / Number(displayed)) - 4}
+              {Math.ceil(kanjiObjectArray.length / displayed) - 4}
             </button>
             <button
-              onClick={() => setPage(Math.ceil(kanjiObjectArray.length / Number(displayed)) - 3)}
-              className={`${page === Math.ceil(kanjiObjectArray.length / Number(displayed)) - 3 ? "font-bold" : ""} text-blue-500`}
+              onClick={() =>
+                setPage(
+                  Math.ceil(kanjiObjectArray.length / displayed) - 3
+                )
+              }
+              className={`${
+                page ===
+                Math.ceil(kanjiObjectArray.length / displayed) - 3
+                  ? "font-bold"
+                  : ""
+              } text-blue-500`}
             >
-              {Math.ceil(kanjiObjectArray.length / Number(displayed)) - 3}
+              {Math.ceil(kanjiObjectArray.length / displayed) - 3}
             </button>
             <button
-              onClick={() => setPage(Math.ceil(kanjiObjectArray.length / Number(displayed)) - 2)}
-              className={`${page === Math.ceil(kanjiObjectArray.length / Number(displayed)) - 2 ? "font-bold" : ""} text-blue-500`}
+              onClick={() =>
+                setPage(
+                  Math.ceil(kanjiObjectArray.length / displayed) - 2
+                )
+              }
+              className={`${
+                page ===
+                Math.ceil(kanjiObjectArray.length / displayed) - 2
+                  ? "font-bold"
+                  : ""
+              } text-blue-500`}
             >
-              {Math.ceil(kanjiObjectArray.length / Number(displayed)) - 2}
+              {Math.ceil(kanjiObjectArray.length / displayed) - 2}
             </button>
             <button
-              onClick={() => setPage(Math.ceil(kanjiObjectArray.length / Number(displayed)) - 1)}
-              className={`${page === Math.ceil(kanjiObjectArray.length / Number(displayed)) - 1 ? "font-bold" : ""} text-blue-500`}
+              onClick={() =>
+                setPage(
+                  Math.ceil(kanjiObjectArray.length / displayed) - 1
+                )
+              }
+              className={`${
+                page ===
+                Math.ceil(kanjiObjectArray.length / displayed) - 1
+                  ? "font-bold"
+                  : ""
+              } text-blue-500`}
             >
-              {Math.ceil(kanjiObjectArray.length / Number(displayed)) - 1}
+              {Math.ceil(kanjiObjectArray.length / displayed) - 1}
             </button>
             <button
-              onClick={() => setPage(Math.ceil(kanjiObjectArray.length / Number(displayed)))}
-              className={`${page === Math.ceil(kanjiObjectArray.length / Number(displayed)) ? "font-bold" : ""} text-blue-500`}
+              onClick={() =>
+                setPage(Math.ceil(kanjiObjectArray.length / displayed))
+              }
+              className={`${
+                page === Math.ceil(kanjiObjectArray.length / Number(displayed))
+                  ? "font-bold"
+                  : ""
+              } text-blue-500`}
             >
-              {Math.ceil(kanjiObjectArray.length / Number(displayed))}
+              {Math.ceil(kanjiObjectArray.length / displayed)}
             </button>
-            {page < Math.ceil(kanjiObjectArray.length / Number(displayed)) && (
+            {page < Math.ceil(kanjiObjectArray.length / displayed) && (
               <button
                 onClick={() => setPage((prev) => prev + 1)}
                 className="btn-secondary"
@@ -255,11 +320,11 @@ const KanjiPage = () => {
                 </svg>
               </button>
             )}
-            {page < Math.ceil(kanjiObjectArray.length / Number(displayed)) && (
+            {page < Math.ceil(kanjiObjectArray.length / displayed) && (
               <button
                 onClick={() =>
                   setPage(
-                    Math.ceil(kanjiObjectArray.length / Number(displayed))
+                    Math.ceil(kanjiObjectArray.length / displayed)
                   )
                 }
                 className="btn-secondary"
@@ -268,6 +333,7 @@ const KanjiPage = () => {
               </button>
             )}
           </>
+          // Otherwise the pagination component will be displayed normally
         ) : (
           <>
             <button onClick={() => setPage(1)} className="btn-secondary">
@@ -331,7 +397,7 @@ const KanjiPage = () => {
             </button>
             <button
               onClick={() =>
-                setPage(Math.ceil(kanjiObjectArray.length / Number(displayed)))
+                setPage(Math.ceil(kanjiObjectArray.length / displayed))
               }
               className="btn-secondary"
             >

@@ -1,14 +1,6 @@
 "use client";
 
-import React, {
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
-import flame from "../public/flame.jpg";
-import Image from "next/image";
+import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
@@ -31,11 +23,10 @@ export interface cardsArrayInterface {
 }
 
 const Cards = () => {
+  const searchParams = useSearchParams();
+  const search = searchParams.get("search");
 
-  const searchParams = useSearchParams(); 
-  const search = searchParams.get('search');
-
-  const [cardsArray, setCardsArray] = useState<[cardsArrayInterface]>([
+  const [cardsArray, setCardsArray] = useState<cardsArrayInterface[]>([
     {
       _id: "",
       author: "",
@@ -43,22 +34,21 @@ const Cards = () => {
       kanji: "",
       onyomi: "",
       kunyomi: "",
-      keyword: "",
       imageUrl: "",
       audioUrl: "",
-      prompt: "",
       interval: 600,
       lastStudied: new Date(),
+      prompt: "",
+      keyword: "",
       rating: 0,
       reviews: 0,
       updatedAt: "",
     },
   ]);
 
-  useEffect(() => {
-    console.log(search)
-  }, [search])
-
+  // Create a sorted cards array from the fetched array of cards. 
+  // The cards will be ordered depending on the search value, which is "New" by default. 
+  // The array is reordered each time the searchParams or cardsArray are updated.
   const sortedCardsArray = useMemo(() => {
     return [...cardsArray].sort((a, b) => {
       switch (search) {
@@ -78,6 +68,8 @@ const Cards = () => {
     });
   }, [cardsArray, searchParams]);
 
+
+  // Fetch the cards from the database
   useEffect(() => {
     const fetchPosts = async () => {
       const response = await fetch("/api/card");
@@ -91,6 +83,7 @@ const Cards = () => {
 
   return (
     <section className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 m-4 gap-2">
+      {/* Display each card as a link to the cards' page */}
       {sortedCardsArray &&
         sortedCardsArray.map(
           ({ kanji, keyword, imageUrl, _id }: cardsArrayInterface) => (

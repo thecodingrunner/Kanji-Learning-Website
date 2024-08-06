@@ -49,7 +49,7 @@
 .main:after {
   content: "";
   background-image: url("/images/grid.svg");
-  z-index: 1;
+  z-index: 2;
   position: absolute;
   width: 100%;
   height: 100%;
@@ -97,4 +97,24 @@
 
 .hero-gradient {
   background: linear-gradient(to top, #1578f9 0%, #60baff 100%);
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #38a8fd;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-blue-500;
 }

@@ -1,19 +1,12 @@
 "use client";
 
 import { kanjiObjectArray } from "@/public/data";
-import { useParams, useSearchParams } from "next/navigation";
+import { useParams } from "next/navigation";
 import { SyntheticEvent, useEffect, useState } from "react";
 
 import { useRouter } from "next/navigation";
-import Card from "@/models/card";
 
-import {
-  getStorage,
-  ref,
-  deleteObject,
-  uploadBytes,
-  getDownloadURL,
-} from "firebase/storage";
+import { ref, deleteObject } from "firebase/storage";
 import { storage } from "../firebaseConfig";
 import { useSession } from "next-auth/react";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -63,7 +56,7 @@ const CreateKanjiForm = () => {
   // Voice type for generating audio of kunyomi and onyomi
   const [voiceType, setVoiceType] = useState<string | null>("alloy");
 
-  // Instantiate kanji object, and access image url from local storage
+  // Instantiate kanji object, and access image and audio urls from local storage
   useEffect(() => {
     const kanjiTemp = kanjiObjectArray[Number(index)];
     setKanji(kanjiTemp);
@@ -83,45 +76,46 @@ const CreateKanjiForm = () => {
     console.log(imageUrl);
   }, []);
 
-  useEffect(() => {
-    console.log(audioUrl);
-  }, [audioUrl]);
-
   // Generate audio
   function generateAudio() {
+    console.log("generating audio");
     setGeneratingAudio(true);
 
-    console.log(voiceType);
+    try {
+      const fetchPosts = async () => {
+        const response = await fetch(`/api/audio`, {
+          method: "POST",
+          body: JSON.stringify({
+            text: `${kanji?.kunyomi} ${kanji?.onyomi}`,
+            voice: voiceType,
+          }),
+        });
 
-    const fetchPosts = async () => {
-      const response = await fetch(`/api/audio`, {
-        method: "POST",
-        body: JSON.stringify({
-          text: `${kanji?.kunyomi} ${kanji?.onyomi}`,
-          voice: voiceType,
-        }),
-      });
+        const { audioUrl, filepath } = await response.json();
 
-      const { audioUrl, filepath } = await response.json();
+        setAudioUrl(audioUrl);
+        setAudioFilepath(filepath);
 
-      setAudioUrl(audioUrl);
-      setAudioFilepath(filepath);
-      localStorage.setItem("savedAudioUrl", audioUrl);
+        localStorage.removeItem("savedAudioUrl");
+        localStorage.setItem("savedAudioUrl", audioUrl);
+      };
 
+      fetchPosts();
+
+      console.log("successfully generated audio");
+    } catch (error) {
+      console.log("Failed to generate audio", error);
+    } finally {
       setGeneratingAudio(false);
-    };
-
-    fetchPosts();
+    }
   }
 
   //   Delete audio
   function deleteAudio(filepath: string) {
-    console.log(filepath);
-
-    // Create a reference to the file to delete
-    const audioRef = ref(storage, filepath);
-
     try {
+      // Create a reference to the file to delete
+      const audioRef = ref(storage, filepath);
+      // Delete the audio
       deleteObject(audioRef);
       setAudioUrl(null);
       console.log("successfully deleted audio");
@@ -132,88 +126,101 @@ const CreateKanjiForm = () => {
 
   // Generate image
   async function generateImage() {
-    setGeneratingImage(true);
+    try {
+      setGeneratingImage(true);
 
-    const response = await fetch("/api/generate", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(prompt),
-    });
+      const response = await fetch("/api/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(prompt),
+      });
 
-    const imageUrlTemp = await response.json();
+      if (response.ok) {
+        console.log("successfully generated image");
+      }
 
-    console.log(imageUrlTemp);
+      const imageUrlTemp = await response.json();
 
-    setImageUrl(imageUrlTemp);
-    localStorage.setItem("savedImageUrl", imageUrlTemp);
+      setImageUrl(imageUrlTemp);
+      localStorage.setItem("savedImageUrl", imageUrlTemp);
 
-    setGeneratingImage(false);
+      setGeneratingImage(false);
+    } catch (error) {
+      console.log("Failed to generate image", error);
+      setGeneratingImage(false);
+    }
   }
 
   // Generate prompt
   async function generatePrompt() {
-    setGeneratingPrompt(true);
+    try {
+      setGeneratingPrompt(true);
 
-    const response = await fetch("/api/prompt", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        onyomi: kanji.onyomi,
-        kunyomi: kanji.kunyomi,
-        keyword: kanji.keyword,
-      }),
-    });
+      const response = await fetch("/api/prompt", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          onyomi: kanji.onyomi,
+          kunyomi: kanji.kunyomi,
+          keyword: kanji.keyword,
+        }),
+      });
 
-    const promptTemp = await response.json();
+      if (response.ok) {
+        console.log("Successfully generated prompt");
+      }
 
-    console.log(promptTemp);
+      const promptTemp = await response.json();
 
-    setPrompt(promptTemp);
-
-    setGeneratingPrompt(false);
+      setPrompt(promptTemp);
+    } catch (error) {
+      console.log("Failed to generate prompt", error);
+    } finally {
+      setGeneratingPrompt(false);
+    }
   }
 
   // Add card
   const addCard = async (e: SyntheticEvent) => {
-    setAddingCard(true);
     e.preventDefault();
 
-    const cardToAdd = {
-      author: session?.user.name,
-      userIds: [session?.user.id],
-      kanji: kanji.kanji,
-      onyomi: kanji.onyomi,
-      kunyomi: kanji.kunyomi,
-      keyword: kanji.keyword,
-      prompt: prompt,
-      imageUrl: imageUrl,
-      audioUrl: audioUrl,
-      interval: 600,
-      lastStudied: new Date(),
-      users: 1,
-      reviews: 0,
-      rating: 0,
-    };
-
     try {
+      setAddingCard(true);
+
+      const cardToAdd = {
+        author: session?.user.name,
+        userIds: [session?.user.id],
+        kanji: kanji.kanji,
+        onyomi: kanji.onyomi,
+        kunyomi: kanji.kunyomi,
+        keyword: kanji.keyword,
+        prompt: prompt,
+        imageUrl: imageUrl,
+        audioUrl: audioUrl,
+        interval: 600,
+        lastStudied: new Date(),
+        users: 1,
+        reviews: 0,
+        rating: 0,
+      };
+
       const response = await fetch("/api/card/add", {
         method: "POST",
         body: JSON.stringify(cardToAdd),
       });
 
       if (response.ok) {
-        setAddingCard(false);
+        console.log("Successfully added card");
         router.push("/?search=New");
-        console.log("card added");
       }
     } catch (error) {
-      console.log(error);
+      console.log("Failed to add card", error);
     } finally {
-      setSubmitted(true);
+      setAddingCard(false);
     }
   };
 
@@ -223,6 +230,7 @@ const CreateKanjiForm = () => {
         className="flex flex-col gap-4 px-8 py-4 border border-blue-500 rounded-md flex-1 overflow-auto bg-white shadow-lg"
         onSubmit={(e) => addCard(e)}
       >
+        {/* Kanji Input */}
         <label className="label">
           Kanji
           <input
@@ -238,6 +246,7 @@ const CreateKanjiForm = () => {
           />
         </label>
 
+        {/* Keyword Input */}
         <label className="label">
           Keyword
           <input
@@ -253,6 +262,7 @@ const CreateKanjiForm = () => {
           />
         </label>
 
+        {/* Onyomi Input */}
         <label className="label">
           Onyomi
           <input
@@ -268,6 +278,7 @@ const CreateKanjiForm = () => {
           />
         </label>
 
+        {/* Kunyomi Input */}
         <label className="label">
           Kunyomi
           <input
@@ -283,6 +294,7 @@ const CreateKanjiForm = () => {
           />
         </label>
 
+        {/* Voice Selection */}
         <select
           name="voice"
           id="voice"
@@ -305,24 +317,36 @@ const CreateKanjiForm = () => {
           {generatingAudio ? "Generating Audio..." : "Generate Audio"}
         </button>
 
-        {audioUrl && (
-          <div className="flex gap-4 justify-center items-center">
-            <audio controls className="">
-              <source src={audioUrl} type="audio/mp3" />
-            </audio>
-            {/* <AudioAnalyzer audioUrl={audioUrl} /> */}
-            <button
-              type="button"
-              className="btn-primary"
-              onClick={() => {
-                deleteAudio(audioFilepath);
-              }}
-            >
-              Delete
-            </button>
+        {generatingAudio ? (
+          <div className="mx-auto">
+            <ClipLoader
+              color={"#3b82f6"}
+              loading={generatingAudio}
+              size={120}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />
           </div>
+        ) : (
+          audioUrl && (
+            <div className="flex gap-4 justify-center items-center">
+              <audio controls className="">
+                <source src={audioUrl} type="audio/mp3" />
+              </audio>
+              <button
+                type="button"
+                className="btn-primary"
+                onClick={() => {
+                  deleteAudio(audioFilepath);
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          )
         )}
 
+        {/* Prompt input textarea and generation button */}
         <label className="label">
           Image prompt
           <button
@@ -330,7 +354,7 @@ const CreateKanjiForm = () => {
             onClick={() => generatePrompt()}
             className="blue-gradient rounded-lg py-2 px-3 text-white"
           >
-            Generate Prompt
+            {generatingPrompt ? "Generating Prompt..." : "Generate Prompt"}
           </button>
           <textarea
             placeholder="write your image prompt here"
@@ -340,14 +364,16 @@ const CreateKanjiForm = () => {
           />
         </label>
 
+        {/* Generate Image Button */}
         <button
           type="button"
           onClick={() => generateImage()}
           className="blue-gradient rounded-lg py-2 px-3 text-white text-lg"
         >
-          Generate Image
+          {generatingImage ? "Generating Image..." : "Generate Image"}
         </button>
 
+        {/* Display loader/spinner if generating image, message if no image, and image if image exists/has been generated */}
         {generatingImage ? (
           <div className="mx-auto">
             <ClipLoader
@@ -372,21 +398,26 @@ const CreateKanjiForm = () => {
           <div>You haven't generated an image yet.</div>
         )}
 
+        {/* Add card button */}
         <button className="btn-secondary">
           {addingCard ? "Creating card..." : "Add card"}
         </button>
       </form>
 
+      {/* Display card as it is being created.  */}
       <div className="flex-1 p-4 flex flex-col gap-4">
+        {/* Display the front of the card, with the kanji */}
         <h2 className="text-3xl text-center">Front</h2>
         <div className="w-full flex flex-col gap-4 items-center rounded-md justify-center border border-blue-500 p-4 bg-white shadow-lg">
           <h1 className="text-9xl">{kanji?.kanji}</h1>
         </div>
+        {/* Display the back of the card, with keyword, onyomi, kunyomi etc */}
         <h2 className="text-3xl text-center">Back</h2>
         <div className="w-full flex flex-col gap-4 items-center rounded-md justify-center border border-blue-500 p-4 bg-white shadow-lg">
           <h1 className="text-4xl">{kanji?.keyword}</h1>
           <h1 className="text-2xl">{kanji?.onyomi}</h1>
           <h1 className="text-2xl">{kanji?.kunyomi}</h1>
+          {/* Only display audio and image if they exist */}
           {audioUrl && (
             <audio controls className="">
               <source src={audioUrl} type="audio/mp3" />

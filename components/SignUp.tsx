@@ -1,20 +1,25 @@
 "use client";
+
 import React, { SyntheticEvent, useEffect, useState } from "react";
-import Link from "next/link";
 import google from "../public/icons/google-icon.svg";
 
 import { getProviders, signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 const SignUp = ({ setFormType }: any) => {
+
   const [providers, setProviders] = useState<any>(null);
+
+  // Access session
   const { data: session } = useSession();
 
+  // Instantiate router
   const router = useRouter();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  // Set up providers on page load
   useEffect(() => {
     const setUpProviders = async () => {
       const response = await getProviders();
@@ -26,44 +31,39 @@ const SignUp = ({ setFormType }: any) => {
     setUpProviders();
   }, []);
 
+  // Register function
   async function register(e: SyntheticEvent) {
-    // const result = await signIn("credentials", {
-    //   username: values.username,
-    //   password: values.password,
-    //   redirect: false,
-    // });
     e.preventDefault();
 
-    const user = {
-      username,
-      password,
-    };
-
-    console.log(user);
-
-    const result = await fetch("/api/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(user),
-    });
-
-    console.log(result)
-
-    // if (!result.ok) {
-    //   console.error("failed to register");
-    // } else {
-    //   router.push("/");
-    // }
-
-    setFormType("signin");
+    try {
+      const user = {
+        username,
+        password,
+      };
+  
+      const result = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
+  
+      console.log("Successfully registered")
+  
+      setFormType("signin");
+    } catch (error) {
+      console.log("Failed to register", error)
+    }
   }
 
   return (
     <div className="shadow-2xl py-6 px-10 bg-blue-500 text-white">
+
       <h1 className="text-3xl font-semibold">Sign up</h1>
       <h3 className="pb-6">Get started scanning books</h3>
+
+      {/* Username and Password register form */}
       <form onSubmit={(e) => register(e)} className="gap-4 flex flex-col">
         <input
           type="text"
@@ -72,6 +72,7 @@ const SignUp = ({ setFormType }: any) => {
           className="px-2 py-1 text-black"
           onChange={(e) => setUsername(e.target.value)}
           value={username}
+          required
         />
         <input
           type="password"
@@ -80,12 +81,17 @@ const SignUp = ({ setFormType }: any) => {
           className="px-2 py-1 text-black"
           onChange={(e) => setPassword(e.target.value)}
           value={password}
+          required
         />
         <button type="submit" className="w-full font-bold">
           Sign up
         </button>
       </form>
+
       <p className="w-full text-center my-4">or</p>
+
+      {/* If already signed in in with provider, display log out with provider option */}
+      {/* If not yet signed up with provided, display sign in with provider option */}
       {session?.user ? (
         <div className="flex items-center gap-4">
           <button
@@ -122,6 +128,8 @@ const SignUp = ({ setFormType }: any) => {
               ))}
         </div>
       )}
+
+      {/* Link to Sign in page */}
       <p className="mt-4">
         Already have an account?{" "}
         <button onClick={() => setFormType("signin")} className="underline">

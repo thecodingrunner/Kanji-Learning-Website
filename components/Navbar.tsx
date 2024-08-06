@@ -2,16 +2,14 @@
 
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React from "react";
 
 const Navbar = () => {
   const { data: session } = useSession();
-  // const session = {user: true}
-  const router = useRouter();
 
   return (
     <nav className="flex justify-between py-4 px-12 items-center hero-gradient m-2 rounded-3xl shadow-xl">
+      {/* Logo and website name */}
       <Link
           href={"/"} className="flex gap-4 items-center justify-center">
         <div
@@ -24,6 +22,8 @@ const Navbar = () => {
         </div>
         <h1 className="text-5xl text-white font-bold">Kanjify</h1>
       </Link>
+
+      {/* Display different buttons and links depending on whether logged in or not */}
       {session?.user ? (
         <div className="flex gap-5 justify-center items-center text-lg">
           <Link href={"/pages/createCard"} className="btn-white">

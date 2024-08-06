@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import SearchBar from "./SearchBar";
 import Cards from "./Cards";
 
