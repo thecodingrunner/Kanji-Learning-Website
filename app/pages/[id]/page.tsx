@@ -19,11 +19,11 @@ const page = () => {
   const router = useRouter();
   const { data: session } = useSession();
 
-  useEffect(() => {
-    if (!session?.user.id) {
-      router.push('/')
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (!session?.user.id) {
+  //     router.push('/')
+  //   }
+  // }, [])
 
   const [card, setCard] = useState<CardInterface>({
     _id: "",
@@ -122,7 +122,7 @@ const page = () => {
             )}
 
             {/* Submit rating section */}
-            <div className="flex gap-4 justify-center items-center p-4 border border-blue-500 rounded-lg bg-white">
+            <div className="flex sm:flex-row flex-col gap-4 justify-center items-center p-4 border border-blue-500 rounded-lg bg-white">
               {/* UI for selecting the rating out of 5 stars. */}
               <div className="flex justify-center items-center">
                 <button onClick={() => setRating(1)}>
@@ -251,11 +251,11 @@ const page = () => {
           </div>
 
           {/* Display the card */}
-          <article className="flex w-screen">
-            <div className="grid grid-cols-2 gap-10 px-10 py-6 w-full">
+          <article className="flex">
+            <div className="grid md:grid-cols-2 grid-cols-1 gap-10 sm:px-10 px-6 py-6 w-full">
               {/* Front of the card, with kanji */}
               <div className="flex items-center justify-center border border-blue-500 rounded-md p-4 bg-white">
-                <h1 className="text-[16rem]">{card.kanji}</h1>
+                  <h1 className="sm:text-[16rem] text-[10rem]">{card.kanji}</h1>
               </div>
 
               {/* Back of the card, with keyword, onyomi, etc */}
@@ -265,7 +265,7 @@ const page = () => {
                 <h3 className="text-2xl">{card.kunyomi}</h3>
                 {/* Only display audio and image if urls exist. */}
                 {card.audioUrl && (
-                  <audio controls className="">
+                  <audio controls className="max-sm:w-full">
                     <source src={card.audioUrl} type="audio/mp3" />
                   </audio>
                 )}

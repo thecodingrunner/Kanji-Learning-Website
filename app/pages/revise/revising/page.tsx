@@ -118,27 +118,27 @@ const Page = () => {
         <div className="flex flex-col gap-2">
           {flip ? (
             <div
-              className="flex flex-col items-center justify-center gap-2 border-2 border-blue-500 rounded-md p-4 bg-white"
+              className="flex flex-col items-center justify-center gap-2 border-2 border-blue-500 rounded-md sm:p-4 p-2 bg-white"
               onClick={() => setFlip((prev) => !prev)}
             >
               <h2 className="text-2xl">{cardsArray[0].keyword}</h2>
               <h3 className="text-2xl">{cardsArray[0].onyomi}</h3>
               <h3 className="text-2xl">{cardsArray[0].kunyomi}</h3>
               {cardsArray[0].audioUrl && (
-                <audio controls className="">
+                <audio controls className="max-sm:w-full">
                   <source src={cardsArray[0].audioUrl} type="audio/mp3" />
                 </audio>
               )}
-              <img src={cardsArray[0].imageUrl} className="w-72 h-72" />
+              <img src={cardsArray[0].imageUrl} className="sm:w-72 sm:h-72 w-48 h-48" />
               <p className="text-xl">{cardsArray[0].prompt}</p>
             </div>
           ) : (
             // Display the back of the card if flip is true (when card is clicked will be true)
             <div
-              className="bg-white flex justify-center items-center px-28 border-2 border-blue-500"
+              className="bg-white flex justify-center items-center px-10 sm:px-28 border-2 border-blue-500"
               onClick={() => setFlip((prev) => !prev)}
             >
-              <h1 className="text-[20rem]">{cardsArray[0].kanji}</h1>
+              <h1 className="sm:text-[20rem] text-[10rem]">{cardsArray[0].kanji}</h1>
             </div>
           )}
 

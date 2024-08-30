@@ -88,14 +88,14 @@ const KanjiPage = () => {
       </div>
 
       {/* Map through and display all the kanji from the kanji array. */}
-      <article className="gap-2 flex flex-wrap mx-auto px-10 pb-10">
+      <article className="gap-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 px-10 pb-10 w-full">
         {getDisplayedKanji().map(({ kanji, keyword }, index) => (
           <>
           {/* If there is a card in the users collection of the same kanji, display this kanji with a green background to show that it has been added. */}
           {/* The link will also be to the page for viewing the currently existing card, rather than the page for creating a new card. */}
             {cardsArray.some((el) => el.kanji === kanji) ? (
               <Link
-                className="h-40 w-40 text-6xl bg-gradient-to-b from-green-500 to-green-800 text-white flex justify-center items-center drop-shadow-xl"
+                className="h-40 text-6xl bg-gradient-to-b from-green-500 to-green-800 text-white flex justify-center items-center drop-shadow-xl"
                 key={index}
                 href={`/pages/${
                   cardsArray.find((el) => el.kanji === kanji)?._id
@@ -105,7 +105,7 @@ const KanjiPage = () => {
               </Link>
             ) : (
               <Link
-                className="h-40 w-40 text-6xl bg-gradient-to-b from-blue-500 to-blue-800 text-white flex justify-center items-center drop-shadow-xl"
+                className="h-40 text-6xl bg-gradient-to-b from-blue-500 to-blue-800 text-white flex justify-center items-center drop-shadow-xl"
                 key={index}
                 href={`/pages/createCard/${index + displayed * (page - 1)}`}
               >
@@ -126,7 +126,7 @@ const KanjiPage = () => {
             </button>
             <button
               onClick={() => setPage((prev) => prev - 1)}
-              className="btn-secondary"
+              className="btn-secondary max-sm:hidden"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -196,7 +196,7 @@ const KanjiPage = () => {
               onClick={() =>
                 setPage(Math.ceil(kanjiObjectArray.length / displayed))
               }
-              className="btn-secondary"
+              className="btn-secondary max-sm:hidden"
             >
               End
             </button>
@@ -205,7 +205,7 @@ const KanjiPage = () => {
         ) : page >
           Math.ceil(kanjiObjectArray.length / displayed) - 2 ? (
           <>
-            <button onClick={() => setPage(1)} className="btn-secondary">
+            <button onClick={() => setPage(1)} className="btn-secondary max-sm:hidden">
               Start
             </button>
             <button
@@ -327,7 +327,7 @@ const KanjiPage = () => {
                     Math.ceil(kanjiObjectArray.length / displayed)
                   )
                 }
-                className="btn-secondary"
+                className="btn-secondary max-sm:hidden"
               >
                 End
               </button>
@@ -336,7 +336,7 @@ const KanjiPage = () => {
           // Otherwise the pagination component will be displayed normally
         ) : (
           <>
-            <button onClick={() => setPage(1)} className="btn-secondary">
+            <button onClick={() => setPage(1)} className="btn-secondary max-sm:hidden">
               Start
             </button>
             <button
@@ -399,7 +399,7 @@ const KanjiPage = () => {
               onClick={() =>
                 setPage(Math.ceil(kanjiObjectArray.length / displayed))
               }
-              className="btn-secondary"
+              className="btn-secondary max-sm:hidden"
             >
               End
             </button>

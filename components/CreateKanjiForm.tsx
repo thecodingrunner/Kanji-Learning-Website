@@ -225,7 +225,7 @@ const CreateKanjiForm = () => {
   };
 
   return (
-    <div className="flex gap-8 p-4">
+    <div className="flex flex-col md:flex-row gap-8 p-4">
       <form
         className="flex flex-col gap-4 px-8 py-4 border border-blue-500 rounded-md flex-1 overflow-auto bg-white shadow-lg"
         onSubmit={(e) => addCard(e)}
@@ -329,8 +329,8 @@ const CreateKanjiForm = () => {
           </div>
         ) : (
           audioUrl && (
-            <div className="flex gap-4 justify-center items-center">
-              <audio controls className="">
+            <div className="flex sm:flex-row flex-col gap-4 justify-center items-center">
+              <audio controls className="max-sm:w-full">
                 <source src={audioUrl} type="audio/mp3" />
               </audio>
               <button
@@ -419,7 +419,7 @@ const CreateKanjiForm = () => {
           <h1 className="text-2xl">{kanji?.kunyomi}</h1>
           {/* Only display audio and image if they exist */}
           {audioUrl && (
-            <audio controls className="">
+            <audio controls className="max-sm:w-full">
               <source src={audioUrl} type="audio/mp3" />
             </audio>
           )}
