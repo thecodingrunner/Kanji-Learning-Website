@@ -40,3 +40,5 @@ next-env.d.ts
 compose.yaml
 fly.toml
 fly-deploy.yml
+
+Dockerfile

@@ -90,13 +90,13 @@ const KanjiPage = () => {
       {/* Map through and display all the kanji from the kanji array. */}
       <article className="gap-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 px-10 pb-10 w-full">
         {getDisplayedKanji().map(({ kanji, keyword }, index) => (
-          <>
+          <div key={keyword}>
           {/* If there is a card in the users collection of the same kanji, display this kanji with a green background to show that it has been added. */}
           {/* The link will also be to the page for viewing the currently existing card, rather than the page for creating a new card. */}
             {cardsArray.some((el) => el.kanji === kanji) ? (
               <Link
                 className="h-40 text-6xl bg-gradient-to-b from-green-500 to-green-800 text-white flex justify-center items-center drop-shadow-xl"
-                key={index}
+                key={keyword}
                 href={`/pages/${
                   cardsArray.find((el) => el.kanji === kanji)?._id
                 }`}
@@ -106,13 +106,13 @@ const KanjiPage = () => {
             ) : (
               <Link
                 className="h-40 text-6xl bg-gradient-to-b from-blue-500 to-blue-800 text-white flex justify-center items-center drop-shadow-xl"
-                key={index}
+                key={keyword}
                 href={`/pages/createCard/${index + displayed * (page - 1)}`}
               >
                 {kanji}
               </Link>
             )}
-          </>
+          </div>
         ))}
       </article>
 

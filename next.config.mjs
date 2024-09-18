@@ -6,9 +6,12 @@ const nextConfig = {
       "oaidalleapiprodscus.blob.core.windows.net",
     ],
   },
-  experimental: {
-    appDir: true,
+  env: {
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
   },
+  // experimental: {
+  //   appDir: true,
+  // },
 };
 
 export default nextConfig;

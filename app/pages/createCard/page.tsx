@@ -7,7 +7,7 @@ import React, { useEffect } from 'react'
 
 // This will allow for the creation of general kanji cards without any specific boilerplate
 
-const page = () => {
+const Page = () => {
 
   const router = useRouter();
   const { data: session } = useSession();
@@ -23,4 +23,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page

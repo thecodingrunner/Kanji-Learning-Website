@@ -7,7 +7,7 @@ import { useEffect } from "react";
 
 // This will allow the creation of a kanji card for a specific kanji that has been selected
 
-const page = () => {
+const Page = () => {
 
   const router = useRouter();
   const { data: session } = useSession();
@@ -23,4 +23,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
