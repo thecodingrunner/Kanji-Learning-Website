@@ -1,7 +1,5 @@
 <h1>Kanjify</h1>
 
-Visit website: https://kanjify.net/
-
 <h2>Description</h2>
 A Next JS application for creating, sharing, and revising AI generated Kanji flashcards. Suitable for anyone learning Japanese! 
 Demo Username: demousername 
@@ -30,3 +28,5 @@ This project was coded using NextJS, with the OpenAI API for the generation of c
 ![kanjify-6-BTtxbPzQ](https://github.com/user-attachments/assets/c2c8fea0-6aa8-4620-880e-003e2288f73c)
 ![kanjify-5-C0uDYeiT](https://github.com/user-attachments/assets/51221414-fc6c-4788-800d-a874120f77b9)
 ![kanjify-4-DYGM9a5L](https://github.com/user-attachments/assets/c22961a8-498e-4aac-b69b-4052e2f6298f)
+
+>>>>>>> 6ecaf2a (Update README.md)
