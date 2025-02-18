@@ -1,5 +1,7 @@
 <h1>Kanjify</h1>
 
+Visit website: https://kanjify.net/
+
 <h2>Description</h2>
 A Next JS application for creating, sharing, and revising AI generated Kanji flashcards. Suitable for anyone learning Japanese! 
 Demo Username: demousername 
