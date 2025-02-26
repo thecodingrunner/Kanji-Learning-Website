@@ -4,6 +4,8 @@ const nextConfig = {
     domains: [
       "lh3.googleusercontent.com",
       "oaidalleapiprodscus.blob.core.windows.net",
+      "https://firebasestorage.googleapis.com",
+      "firebasestorage.googleapis.com"
     ],
   },
   env: {

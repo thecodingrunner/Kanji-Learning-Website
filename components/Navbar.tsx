@@ -36,6 +36,9 @@ const Navbar = () => {
             <Link href={"/pages/revise"} className="text-white">
               Revise
             </Link>
+            <Link href={"/pages/browse"} className="text-white">
+              Browse
+            </Link>
             <Link href={"/pages/cardLibrary"} className="text-white">
               Your collection
             </Link>
@@ -55,6 +58,9 @@ const Navbar = () => {
             </Link>
             <Link href={"/pages/revise"} className="text-white">
               Revise
+            </Link>
+            <Link href={"/pages/browse"} className="text-white">
+              Browse
             </Link>
             <Link href={"/pages/cardLibrary"} className="text-white">
               Your collection

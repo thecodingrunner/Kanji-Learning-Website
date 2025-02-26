@@ -1,33 +1,25 @@
-# Stage 1: Build Stage
-FROM node:22-alpine AS build
+# Use a specific Node.js version
+FROM node:18-alpine
 
 # Set working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json
+# Copy package.json and package-lock.json (if available)
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm ci
 
-# Copy all application files
+# Copy the rest of the application
 COPY . .
 
-# Build the application (if needed)
-# For example, if you're using a build step like a bundler or transpiler (e.g., webpack, Babel)
-# RUN npm run build
+# Build the application
+RUN npm run build
 
-# Stage 2: Runtime Stage
-FROM node:22-alpine
-
-# Set working directory
-WORKDIR /app
-
-# Copy only necessary files from the build stage
-COPY --from=build /app /app
-
-# Expose the application port
+# Expose the port the app runs on
 EXPOSE 3000
 
-# Command to run the application
-CMD ["npm", "run", "dev"]
+ENV NODE_ENV=production
+
+# Start the application
+CMD ["npm", "start"]

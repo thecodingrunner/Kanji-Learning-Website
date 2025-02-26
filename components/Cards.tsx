@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import Image from "next/image";
 
 export interface cardsArrayInterface {
   _id: string;
@@ -92,10 +93,17 @@ const Cards = () => {
               key={_id}
               href={`/pages/${_id}`}
             >
-              <img
+              {/* <img
                 src={imageUrl}
                 alt=""
                 className="object-cover w-full h-full object-center"
+              /> */}
+              <Image
+              src={imageUrl}
+              alt={kanji}
+              className="object-cover w-full h-full object-center"
+              width={250}
+              height={250}
               />
               <div className="absolute left-0 top-0 w-full h-full flex items-center justify-center flex-col bg-opacity-40 bg-black">
                 <h3 className="text-9xl text-white">{kanji}</h3>

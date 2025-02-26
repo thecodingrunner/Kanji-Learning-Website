@@ -77,6 +77,8 @@ const authOptions = {
               { username: token.username }
             ]
           });
+
+          console.log(sessionUser);
     
           if (sessionUser) {
             session.user = {
@@ -84,8 +86,11 @@ const authOptions = {
               id: sessionUser._id.toString(),
               username: sessionUser.username
             };
+            session.user.name = sessionUser.username;
           }
         }
+
+        console.log(session);
     
         return session;
       },
@@ -126,4 +131,4 @@ const authOptions = {
 
 const handler = NextAuth(authOptions)
 
-export { handler as GET, handler as POST };
+export { handler as GET, handler as POST, authOptions };
