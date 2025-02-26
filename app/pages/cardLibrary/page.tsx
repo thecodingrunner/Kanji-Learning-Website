@@ -14,6 +14,10 @@ const KanjiPage = () => {
   const router = useRouter();
   const { data: session } = useSession();
 
+  const [kanjiOptionsArray, setKanjiOptionsArray] = useState<cardsArrayInterface[] | null>(null);
+  const [displayPopup, setDisplayPopup] = useState<string>("")
+  const [optionsIndex, setOptionsIndex] = useState(0);
+
   useEffect(() => {
     if (!session?.user.id) {
       router.push('/')
@@ -66,6 +70,24 @@ const KanjiPage = () => {
     );
   };
 
+  const setPopup = (optionsArray: cardsArrayInterface[] | null, kanji: string) => {
+    setKanjiOptionsArray(optionsArray);
+    setDisplayPopup(prev => prev === kanji ? "" : kanji);
+    setOptionsIndex(0);
+  }
+
+  const handleNext = () => {
+    if (optionsIndex < kanjiOptionsArray.length - 2) {
+      setOptionsIndex(prev => prev + 1);
+    }
+  };
+  
+  const handlePrev = () => {
+    if (optionsIndex > 0) {
+      setOptionsIndex(prev => prev - 1);
+    }
+  };
+
   const pages = Math.ceil(kanjiObjectArray.length / displayed);
 
   return (
@@ -94,18 +116,58 @@ const KanjiPage = () => {
           {/* If there is a card in the users collection of the same kanji, display this kanji with a green background to show that it has been added. */}
           {/* The link will also be to the page for viewing the currently existing card, rather than the page for creating a new card. */}
             {cardsArray.some((el) => el.kanji === kanji) ? (
-              <Link
-                className="h-40 text-6xl bg-gradient-to-b from-green-500 to-green-800 text-white flex justify-center items-center drop-shadow-xl"
-                key={keyword}
-                href={`/pages/${
-                  cardsArray.find((el) => el.kanji === kanji)?._id
-                }`}
-              >
-                {kanji}
-              </Link>
+              <div className="flex">
+                <button
+                  className="flex-auto h-40 text-6xl bg-gradient-to-b from-green-500 to-green-800 text-white flex justify-center items-center drop-shadow-xl"
+                  key={keyword}
+                  onClick={() => setPopup(cardsArray.filter((el) => el.kanji === kanji), kanji)}
+                >
+                  {kanji}
+                </button>
+                {(displayPopup === kanji) && (
+                  <div className={`${displayPopup ? "flex-auto flex flex-col gap-1 px-1" : "hidden"}`}>
+                  {kanjiOptionsArray?.slice(optionsIndex, optionsIndex + 2).map((option) => (
+                    <Link
+                      key={option._id} // Use unique key
+                      className="flex gap-1 justify-center items-center flex-1 bg-gradient-to-b from-blue-500 to-blue-800 text-white rounded-md"
+                      href={`/pages/${option._id}`} // Correctly referencing option
+                    >
+                      <span>{option.author}</span>
+                      <span className="text-sm">({Math.floor(option.rating)} stars)</span>
+                    </Link>
+                  ))}
+                  <Link
+                    className="flex gap-1 justify-center items-center flex-1 bg-gradient-to-b from-blue-500 to-blue-800 text-white rounded-md"
+                    key={keyword}
+                    href={`/pages/createCard/${index + displayed * (page - 1)}`}
+                  >
+                    Create New Card
+                  </Link>
+                  {(kanjiOptionsArray && kanjiOptionsArray?.length > 2) && (
+                    <div className="flex gap-1 flex-1">
+                      <button
+                        className="flex gap-1 justify-center items-center flex-1 bg-gradient-to-b from-blue-500 to-blue-800 text-white rounded-md"
+                        key={keyword}
+                        onClick={handlePrev}
+                      >
+                        Previous
+                      </button>
+                      <button
+                      className="flex gap-1 justify-center items-center flex-1 bg-gradient-to-b from-blue-500 to-blue-800 text-white rounded-md"
+                      key={keyword}
+                      onClick={handleNext}
+                      >
+                        Next
+                      </button>
+                    </div>
+                  )}
+                </div>
+                )}
+
+              </div>
             ) : (
               <Link
-                className="h-40 text-6xl bg-gradient-to-b from-blue-500 to-blue-800 text-white flex justify-center items-center drop-shadow-xl"
+                className="flex-1 h-40 text-6xl bg-gradient-to-b from-blue-500 to-blue-800 text-white flex justify-center items-center drop-shadow-xl"
                 key={keyword}
                 href={`/pages/createCard/${index + displayed * (page - 1)}`}
               >
