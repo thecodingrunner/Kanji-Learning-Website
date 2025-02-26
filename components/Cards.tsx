@@ -27,6 +27,9 @@ const Cards = () => {
   const searchParams = useSearchParams();
   const search = searchParams.get("search");
 
+  const [page, setPage] = useState(1);
+  const limit = 10;
+
   const [cardsArray, setCardsArray] = useState<cardsArrayInterface[]>([
     {
       _id: "",
@@ -73,46 +76,57 @@ const Cards = () => {
   // Fetch the cards from the database
   useEffect(() => {
     const fetchPosts = async () => {
-      const response = await fetch("/api/card");
+      const response = await fetch(`/api/card?page=${page}&limit=${limit}`);
       const data = await response.json();
       console.log(data);
       setCardsArray(data);
     };
 
     fetchPosts();
-  }, []);
+  }, [page]);
 
   return (
-    <section className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 m-4 gap-2">
-      {/* Display each card as a link to the cards' page */}
-      {sortedCardsArray &&
-        sortedCardsArray.map(
-          ({ kanji, keyword, imageUrl, _id }: cardsArrayInterface) => (
-            <Link
-              className="relative h-60 border-black rounded-md overflow-hidden"
-              key={_id}
-              href={`/pages/${_id}`}
-            >
-              {/* <img
+    <>
+      <section className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 m-4 gap-2">
+        {/* Display each card as a link to the cards' page */}
+        {sortedCardsArray &&
+          sortedCardsArray.map(
+            ({ kanji, keyword, imageUrl, _id }: cardsArrayInterface) => (
+              <Link
+                className="relative h-60 border-black rounded-md overflow-hidden"
+                key={_id}
+                href={`/pages/${_id}`}
+              >
+                {/* <img
+                  src={imageUrl}
+                  alt=""
+                  className="object-cover w-full h-full object-center"
+                /> */}
+                <Image
                 src={imageUrl}
-                alt=""
+                alt={kanji}
                 className="object-cover w-full h-full object-center"
-              /> */}
-              <Image
-              src={imageUrl}
-              alt={kanji}
-              className="object-cover w-full h-full object-center"
-              width={250}
-              height={250}
-              />
-              <div className="absolute left-0 top-0 w-full h-full flex items-center justify-center flex-col bg-opacity-40 bg-black">
-                <h3 className="text-9xl text-white">{kanji}</h3>
-                <h2 className="text-2xl text-white font-semibold">{keyword}</h2>
-              </div>
-            </Link>
-          )
-        )}
-    </section>
+                width={250}
+                height={250}
+                />
+                <div className="absolute left-0 top-0 w-full h-full flex items-center justify-center flex-col bg-opacity-40 bg-black">
+                  <h3 className="text-9xl text-white">{kanji}</h3>
+                  <h2 className="text-2xl text-white font-semibold">{keyword}</h2>
+                </div>
+              </Link>
+            )
+          )}
+      </section>
+      <div className="flex gap-4 justify-center items-center text-xl">
+        {/* Render cards */}
+        <button onClick={() => setPage((prev) => Math.max(prev - 1, 1))} className="btn-secondary min-w-20">
+          Previous
+        </button>
+        <button onClick={() => setPage((prev) => prev + 1)} className="btn-secondary min-w-20">
+          Next
+        </button>
+      </div>
+    </>
   );
 };
 
