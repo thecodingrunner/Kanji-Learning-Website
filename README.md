@@ -1,6 +1,5 @@
 <h1>Kanjify</h1>
 
-
 Visit website: https://kanjify.net/
 
 <h2>Description</h2>
