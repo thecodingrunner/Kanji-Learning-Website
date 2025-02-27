@@ -56,25 +56,23 @@ const Page = () => {
 
   // Function for passing card
   async function passCard() {
-    let newInterval = 600;
+    let newInterval = 60;
     let currentInterval = cardsArray[0].interval;
 
     // Update the new interval depending on the value of the current interval
-    if (currentInterval === 600) {
+    if (currentInterval === 60) {
+      newInterval = 600;
+    } else if (currentInterval === 600) {
       newInterval = 86400;
-    } else if (currentInterval === 86400) {
-      newInterval = 432000;
-    } else if (currentInterval === 432000) {
-      newInterval = 864000;
     } else {
-      newInterval = currentInterval * 3;
+      newInterval = currentInterval * 2.5;
     }
 
     // Patch the card with the new interval, and the time studied
     try {
       const response = await fetch(`/api/card/${cardsArray[0]._id}/revise`, {
         method: "PATCH",
-        body: JSON.stringify({ newInterval }),
+        body: JSON.stringify({ newInterval: newInterval, pass: true  }),
       });
 
       if (response.ok) {
@@ -91,12 +89,12 @@ const Page = () => {
   // Function for failing card
   async function failCard() {
     // Set new interval to 600, so that it can be studied again
-    let newInterval = 600;
+    let newInterval = 60;
 
     try {
       const response = await fetch(`/api/card/${cardsArray[0]._id}/revise`, {
         method: "PATCH",
-        body: JSON.stringify({ newInterval }),
+        body: JSON.stringify({ newInterval: newInterval, pass: false }),
       });
 
       if (response.ok) {

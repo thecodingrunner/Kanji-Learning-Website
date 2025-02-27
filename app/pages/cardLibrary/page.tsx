@@ -14,8 +14,26 @@ const KanjiPage = () => {
   const router = useRouter();
   const { data: session } = useSession();
 
-  const [kanjiOptionsArray, setKanjiOptionsArray] = useState<cardsArrayInterface[] | null>(null);
-  const [displayPopup, setDisplayPopup] = useState<string>("")
+  const [kanjiOptionsArray, setKanjiOptionsArray] = useState<cardsArrayInterface[]>([
+    {
+      _id: "",
+      author: "",
+      userIds: [""],
+      kanji: "",
+      onyomi: "",
+      kunyomi: "",
+      imageUrl: "",
+      audioUrl: "",
+      interval: 600,
+      lastStudied: new Date(),
+      prompt: "",
+      keyword: "",
+      rating: 0,
+      reviews: 0,
+      updatedAt: "",
+    },
+  ]);
+  const [displayPopup, setDisplayPopup] = useState<string>("");
   const [optionsIndex, setOptionsIndex] = useState(0);
 
   useEffect(() => {
@@ -70,7 +88,7 @@ const KanjiPage = () => {
     );
   };
 
-  const setPopup = (optionsArray: cardsArrayInterface[] | null, kanji: string) => {
+  const setPopup = (optionsArray: cardsArrayInterface[], kanji: any) => {
     setKanjiOptionsArray(optionsArray);
     setDisplayPopup(prev => prev === kanji ? "" : kanji);
     setOptionsIndex(0);

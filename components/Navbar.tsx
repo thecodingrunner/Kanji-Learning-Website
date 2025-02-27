@@ -42,6 +42,9 @@ const Navbar = () => {
             <Link href={"/pages/cardLibrary"} className="text-white">
               Your collection
             </Link>
+            <Link href={"/pages/profile"} className="text-white">
+              Profile
+            </Link>
             <button className="btn-white" onClick={() => signOut()}>
               Sign out
             </button>
@@ -64,6 +67,9 @@ const Navbar = () => {
             </Link>
             <Link href={"/pages/cardLibrary"} className="text-white">
               Your collection
+            </Link>
+            <Link href={"/pages/profile"} className="text-white">
+              Profile
             </Link>
             <button className="btn-white" onClick={() => signOut()}>
               Sign out

@@ -3,9 +3,9 @@ import connectToDB from "@/utils/database"
 
 export const PATCH = async (req, { params }) => {
 
-    const { newInterval } = await req.json()
+    const { newInterval, pass } = await req.json()
 
-    console.log(newInterval)
+    console.log(newInterval, pass)
 
     try {
         await connectToDB()
@@ -19,8 +19,12 @@ export const PATCH = async (req, { params }) => {
 
         existingCard.interval = newInterval;
         existingCard.lastStudied = new Date();
+        if (pass) {
+            existingCard.correctRevisions++;
+        }
+        existingCard.revisions++;
 
-        console.log(existingCard)
+        console.log(existingCard);
 
         await existingCard.save()
 

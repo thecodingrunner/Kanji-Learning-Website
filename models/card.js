@@ -35,9 +35,18 @@ const CardSchema = new Schema({
     },
     interval: {
         type: Number,
+        default: 60,
     },
     lastStudied: {
         type: Date,
+    },
+    revisions: {
+        type: Number,
+        default: 0,
+    },
+    correctRevisions: {
+        type: Number,
+        default: 0,
     },
     users: {
         type: Number,
