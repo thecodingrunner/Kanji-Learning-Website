@@ -36,12 +36,6 @@ const KanjiPage = () => {
   const [displayPopup, setDisplayPopup] = useState<string>("");
   const [optionsIndex, setOptionsIndex] = useState(0);
 
-  useEffect(() => {
-    if (!session?.user.id) {
-      router.push('/')
-    }
-  }, [])
-
   const [cardsArray, setCardsArray] = useState<cardsArrayInterface[]>([
     {
       _id: "",
@@ -61,6 +55,12 @@ const KanjiPage = () => {
       updatedAt: "",
     },
   ]);
+
+  useEffect(() => {
+    if (!session?.user.id) {
+      router.push('/')
+    }
+  }, [])
 
   // Fetch cards on page load
   useEffect(() => {
