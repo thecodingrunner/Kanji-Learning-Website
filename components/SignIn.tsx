@@ -44,7 +44,7 @@ const SignIn = ({ setFormType }: any) => {
       if (result?.error) {
         console.log("Failed to log in", result.error);
       } else {
-        router.push("/");
+        router.push("/pages/profile");
       }
     } catch (error) {
       console.log("Failed to log in", error);

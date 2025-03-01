@@ -2,7 +2,8 @@ import connectToDB from "@/utils/database";
 import Card from "@/models/card";
 import User from "@/models/user";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "../../auth/[...nextauth]/route";
+// import { authOptions } from "../../auth/[...nextauth]/route";
+import { authOptions } from "@/utils/authOptions"
 
 export const GET = async (req, res) => {
     try {
@@ -15,6 +16,7 @@ export const GET = async (req, res) => {
         }
 
         console.log("Session:", session);
+        console.log("session");
 
         let userId;
 

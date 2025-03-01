@@ -12,7 +12,7 @@ const KanjiPage = () => {
   const [page, setPage] = useState(1);
 
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   const [kanjiOptionsArray, setKanjiOptionsArray] = useState<cardsArrayInterface[]>([
     {
@@ -57,10 +57,11 @@ const KanjiPage = () => {
   ]);
 
   useEffect(() => {
-    if (!session?.user.id) {
-      router.push('/')
+    if (status === "loading") return; // Don't run effect while session is loading
+    if (!session?.user?.id) {
+      router.push("/");
     }
-  }, [])
+  }, [session, status, router]);
 
   // Fetch cards on page load
   useEffect(() => {
@@ -109,22 +110,27 @@ const KanjiPage = () => {
   const pages = Math.ceil(kanjiObjectArray.length / displayed);
 
   return (
-    <div className="flex flex-col gap-2 justify-center items-center">
+    <div className="flex flex-col gap-2 justify-center items-stretch mt-20">
 
       {/* Buttons for selecting the number of kanji to be displayed per page */}
-      <div className="my-6 flex justify-center items-center gap-6 text-xl">
-        <button
-          onClick={() => setDisplayed(25)}
-          className={`${displayed === 25 ? "btn-secondary" : "btn-primary"}`}
-        >
-          25
-        </button>
-        <button
-          onClick={() => setDisplayed(50)}
-          className={`${displayed === 50 ? "btn-secondary" : "btn-primary"}`}
-        >
-          50
-        </button>
+      <div className="my-6 flex gap-6 justify-between text-xl px-10">
+        <div className="flex gap-4 justify-center items-center">
+          <button
+            onClick={() => setDisplayed(25)}
+            className={`${displayed === 25 ? "btn-secondary" : "btn-primary"} self-center`}
+          >
+            25
+          </button>
+          <button
+            onClick={() => setDisplayed(50)}
+            className={`${displayed === 50 ? "btn-secondary" : "btn-primary"} self-center`}
+          >
+            50
+          </button>
+        </div>
+        <Link href={"/pages/createCard"} className="btn-primary self-end">
+          Create a new card
+        </Link>
       </div>
 
       {/* Map through and display all the kanji from the kanji array. */}

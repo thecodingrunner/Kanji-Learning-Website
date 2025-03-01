@@ -4,7 +4,7 @@ import HowItWorks from "@/components/HowItWorks";
 
 export default function Home() {
   return (
-    <main className="flex flex-col gap-4 mt-10">
+    <main className="flex flex-col gap-4">
           <Hero />
           <HowItWorks />
           <CTA />

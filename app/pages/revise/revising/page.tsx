@@ -18,13 +18,14 @@ const Page = () => {
   };
 
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   useEffect(() => {
-    if (!session?.user.id) {
-      router.push('/')
+    if (status === "loading") return; // Don't run effect while session is loading
+    if (!session?.user?.id) {
+      router.push("/");
     }
-  }, [])
+  }, [session, status, router]);
 
   const [cardsArray, setCardsArray] = useState<cardsArrayInterface[]>([
     {
@@ -109,7 +110,7 @@ const Page = () => {
   }
 
   return (
-    <div className="flex justify-center items-center w-full p-2">
+    <div className="flex justify-center items-center w-full p-2 h-screen pt-20">
       {/* If there are cards to be studied, display the first card. */}
       {cardsArray.length !== 0 ? (
         // Display the front of the card if flip is false (false by default)

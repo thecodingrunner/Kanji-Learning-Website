@@ -1,4 +1,5 @@
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+// import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/utils/authOptions"
 import Card from "@/models/card";
 import User from "@/models/user";
 import connectToDB from "@/utils/database"

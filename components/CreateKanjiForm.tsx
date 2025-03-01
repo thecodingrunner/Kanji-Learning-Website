@@ -225,7 +225,7 @@ const CreateKanjiForm = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row gap-8 p-4">
+    <div className="flex flex-col md:flex-row gap-8 p-4 pt-20">
       <form
         className="flex flex-col gap-4 px-8 py-4 border border-blue-500 rounded-md flex-1 overflow-auto bg-white shadow-lg"
         onSubmit={(e) => addCard(e)}
@@ -399,7 +399,7 @@ const CreateKanjiForm = () => {
         )}
 
         {/* Add card button */}
-        <button className="btn-secondary">
+        <button className="btn-secondary self-center text-2xl font-semibold">
           {addingCard ? "Creating card..." : "Add card"}
         </button>
       </form>

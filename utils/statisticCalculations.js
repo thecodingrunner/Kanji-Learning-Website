@@ -23,7 +23,7 @@ const calculateStatistics = (cardsArray, user) => {
     // calculate accuracy
     let accuracy = (totalCorrect/totalReviews)*100;
 
-    let learnerXp = cardsLearned*(accuracy/100);
+    let learnerXp = cardsLearned*(accuracy/10);
 
     return { totalCards, cardsLearned, cardsCreated, totalRevisions, totalReviews, totalCorrect, totalIncorrect, accuracy, learnerXp };
 }

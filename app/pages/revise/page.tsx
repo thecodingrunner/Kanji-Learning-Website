@@ -8,17 +8,18 @@ import React, { useEffect } from "react";
 const Page = () => {
 
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   useEffect(() => {
-    if (!session?.user.id) {
-      router.push('/')
+    if (status === "loading") return; // Don't run effect while session is loading
+    if (!session?.user?.id) {
+      router.push("/");
     }
-  }, [])
+  }, [session, status, router]);
 
   // General revision landing page, relocate to the revising page when the button is pressed
   return (
-    <main className="flex items-center justify-center w-full h-[60vh]">
+    <main className="flex items-center justify-center w-full h-screen">
       <Link
         className="btn-secondary-lg text-4xl"
         href={'/pages/revise/revising'}

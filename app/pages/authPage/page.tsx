@@ -14,7 +14,7 @@ const Page = () => {
 
     useEffect(() => {
       if (session?.user.id) {
-        router.push('/')
+        router.push('/pages/profile')
       }
     }, [session])
 
