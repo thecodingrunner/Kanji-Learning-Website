@@ -98,7 +98,7 @@ const Page = () => {
     <>
       {card && (
         <>
-          <div className="w-full flex flex-col items-center justify-center gap-4 py-4">
+          <div className="w-full flex flex-col items-center justify-center gap-4 py-4 mt-20">
             {/* Display card author */}
             {card.author && (
               <h2 className="text-lg">

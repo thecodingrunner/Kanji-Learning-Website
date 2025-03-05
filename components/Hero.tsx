@@ -3,7 +3,7 @@ import React from "react";
 
 const Hero = () => {
   return (
-    <div className="flex flex-col gap-4 w-[80vw] mx-auto items-center justify-center rounded-lg hero-gradient pt-10 px-10 shadow-xl text-white">
+    <div className="flex flex-col gap-4 w-[80vw] mx-auto items-center justify-center rounded-lg hero-gradient pt-10 mt-8 px-10 shadow-xl text-white">
       <h2 className="text-4xl md:text-6xl font-bold">
         Create AI Generated Kanji Flashcards
       </h2>

@@ -120,7 +120,7 @@ const Page = () => {
             />
           </div>
         {/* )} */}
-        <div className="flex flex-col gap-2 items-start justify-center">
+        <div className="flex flex-col gap-2 items-center sm:items-start justify-center">
           <h2 className="text-3xl font-semibold">
             {session?.user.name}
           </h2>
@@ -172,7 +172,7 @@ const Page = () => {
       <div className="flex gap-6 mt-4 flex-wrap">
       <div className="flex-1 flex flex-col justify-stretch gap-0">
           <h3 className="text-4xl font-semibold h-auto">Actions</h3>
-          <div className="flex flex-col sm:flex-row gap-4 mt-4 justify-stretch h-full">
+          <div className="flex flex-col sm:flex-row gap-4 mt-4 justify-center sm:justify-stretch h-full">
             <Link href={"/pages/revise"} className="hover:scale-[97%] sm:self-start text-xl flex-1 hero-gradient p-4 flex items-center flex-col justify-center text-white rounded-lg shadow-md aspect-square">
               {/* <FaChartLine /> */}
               <p className="text-2xl text-center font-semibold">

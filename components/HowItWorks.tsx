@@ -11,25 +11,29 @@ const HowItWorks = () => {
     ];
 
   return (
-    <section className="py-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-[80vw] mx-auto">
-        {images.map((image, index) => (
-            <div className="relative h-96 rounded-lg flex-shrink-0 flex-1 hero-gradient shadow-xl" key={index}>
-                <div className="absolute left-0 top-0 p-3 text-white w-full font-semibold">
-                    <div className="text-4xl">{index + 1}.</div>
-                    <h2 className="text-3xl text-center">{image.message}</h2>
+    <section className="pt-10 px-8 rounded-lg w-[80vw] mx-auto hero-gradient my-10">
+        <h2 className="text-white text-6xl font-bold text-center mb-20">How It Works</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 px-10">
+            {images.map((image, index) => (
+                <div className="relative flex flex-col items-center justify-between pt-10 pb-10 lg:pb-0 gap-6 h-auto rounded-lg lg:rounded-t-lg lg:rounded-b-0 flex-shrink-0 flex-1 bg-white shadow-xl" key={index}>
+                    <div className="absolute left-1/2 -translate-x-1/2 -top-8 flex items-center justify-center w-16 h-16 text-blue-500 font-semibold rounded-full bg-white">
+                        <div className="text-3xl border-2 border-blue-500 rounded-full w-12 h-12 flex items-center justify-center font-bold">{index + 1}</div>
+                    </div>
+                    <h2 className="text-3xl text-center font-semibold text-blue-500 w-3/4">{image.message}</h2>
+                    <div className="w-3/4 aspect-square shadow-lg flex rounded-t-lg overflow-hidden">
+                        <Image
+                        src={image.url}
+                        alt={image.message}
+                        className="object-cover h-full object-center"
+                        width={500}
+                        height={500}
+                        />
+                    </div>
                 </div>
-                <div className="absolute left-1/2 -translate-x-1/2 bottom-0 w-4/5 h-[60%] shadow-lg flex items-end rounded-t-lg overflow-hidden">
-                    <Image
-                    src={image.url}
-                    alt={image.message}
-                    className="object-cover h-full object-center"
-                    width={500}
-                    height={500}
-                    />
-                </div>
-            </div>
-        ))}
+            ))}
+        </div>
     </section>
+
   )
 }
 
