@@ -13,20 +13,20 @@ const Navbar = () => {
   const [toggleMenu, setToggleMenu] = useState<boolean>(false)
 
   return (
-    <nav className={`${session?.user ? "py-3 fixed left-0 top-0 w-full bg-blue-500" : "rounded-3xl m-2 py-4 hero-gradient"} flex justify-between gap-8 px-12 items-center shadow-xl z-50`}>
+    <nav className={`${session?.user ? "py-3 fixed left-0 top-0 w-full bg-blue-500" : "rounded-3xl m-2 py-6 hero-gradient"} flex justify-between gap-8 px-12 items-center shadow-xl z-50`}>
       {/* Logo and website name */}
       {!session?.user && (
         <Link
             href={"/"} className="flex sm:flex-row flex-col gap-4 items-center justify-center">
             <div
-              className="text-2xl bg-white rounded-full p-2 shadow-xl"
+              className="text-2xl bg-white rounded-full p-1 shadow-xl"
             >
               <img
-                src="/logos/water logo 1.jpg"
-                className="w-28 h-28 rounded-full"
+                src="/logos/mountain logo 1.jpg"
+                className="w-20 h-20 rounded-full"
               />
             </div>
-          <h1 className="text-5xl text-white font-bold">Kanjify</h1>
+            <h1 className="text-6xl text-white font-bold">Kanjify</h1>
         </Link>
       )}
       {session?.user && (
